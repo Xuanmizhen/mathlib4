@@ -1,4 +1,5 @@
-# mathlib4
+# mathlib4: A version of τ (tau)
+**Note that this fork is NOT finished.**
 
 ![GitHub CI](https://github.com/leanprover-community/mathlib4/actions/workflows/build.yml/badge.svg?branch=master)
 [![Bors enabled](https://bors.tech/images/badge_small.svg)](https://mathlib-bors-ca18eefec4cb.herokuapp.com/repositories/16)
