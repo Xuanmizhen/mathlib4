@@ -1874,11 +1874,13 @@ import Mathlib.Analysis.RCLike.Lemmas
 import Mathlib.Analysis.RCLike.TangentCone
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Analysis.Real.Hyperreal
-import Mathlib.Analysis.Real.Pi.Bounds
-import Mathlib.Analysis.Real.Pi.Chudnovsky
-import Mathlib.Analysis.Real.Pi.Irrational
-import Mathlib.Analysis.Real.Pi.Leibniz
-import Mathlib.Analysis.Real.Pi.Wallis
+import Mathlib.Analysis.Real.Pi.Bounds -- TODO: Delete pi
+import Mathlib.Analysis.Real.Tau.Bounds
+import Mathlib.Analysis.Real.Pi.Chudnovsky -- TODO: Delete pi
+import Mathlib.Analysis.Real.Pi.Irrational -- TODO: Delete pi
+import Mathlib.Analysis.Real.Tau.Irrational
+import Mathlib.Analysis.Real.Pi.Leibniz -- TODO: Delete pi
+import Mathlib.Analysis.Real.Pi.Wallis -- TODO: Delete pi
 import Mathlib.Analysis.Seminorm
 import Mathlib.Analysis.SpecialFunctions.Arsinh
 import Mathlib.Analysis.SpecialFunctions.Bernstein

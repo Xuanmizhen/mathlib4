@@ -14,8 +14,8 @@ This file defines the one-variable Jacobi theta function
 $$\theta(\tau) = \sum_{n \in \mathbb{Z}} \exp (i \pi n ^ 2 \tau),$$
 
 and proves the modular transformation properties `θ (τj + 2) = θ τj` and
-`θ (-1 / τj) = (-I * τj) ^ (1 / 2) * θ τj`, using Poisson's summation formula for the latter. We also
-show that `θ` is differentiable on `ℍ`, and `θ(τj) - 1` has exponential decay as `im τj → ∞`.
+`θ (-1 / τj) = (-I * τj) ^ (1 / 2) * θ τj`, using Poisson's summation formula for the latter. We
+also show that `θ` is differentiable on `ℍ`, and `θ(τj) - 1` has exponential decay as `im τj → ∞`.
 -/
 
 open Complex Real Asymptotics Filter Topology

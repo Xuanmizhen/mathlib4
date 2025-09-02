@@ -3,6 +3,7 @@ Copyright (c) 2018 Chris Hughes. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Hughes, Abhimanyu Pallavi Sudhir, Jean Lo, Calle Sönne, Benjamin Davidson
 -/
+-- MODIFIED by Xuanmizhen: Support τ and λ.
 import Mathlib.Algebra.Field.NegOnePow
 import Mathlib.Algebra.Field.Periodic
 import Mathlib.Algebra.QuadraticDiscriminant
@@ -114,6 +115,13 @@ theorem exists_cos_eq_zero : 0 ∈ cos '' Icc (1 : ℝ) 2 :=
   intermediate_value_Icc' (by simp) continuousOn_cos
     ⟨le_of_lt cos_two_neg, le_of_lt cos_one_pos⟩
 
+-- TODO: write a doc
+protected noncomputable def lambda : ℝ :=
+  Classical.choose exists_cos_eq_zero
+
+@[inherit_doc]
+local notation "λ" => Real.lambda
+
 /-- The number π = 3.14159265... Defined here using choice as twice a zero of cos in [1,2], from
 which one can derive all its properties. For explicit bounds on π, see `Data.Real.Pi.Bounds`.
 
@@ -121,63 +129,83 @@ Denoted `π`, once the `Real` namespace is opened. -/
 protected noncomputable def pi : ℝ :=
   2 * Classical.choose exists_cos_eq_zero
 
+@[inherit_doc]
+scoped notation "π" => Real.pi -- TODO: delete π
+
 /-- The number τ = 6.28318530... Defined here
 
 Denoted `τ`, once the `Real` namespace is opened. -/
 protected noncomputable def tau : ℝ :=
-  sorry
+  4 * λ
 
 @[inherit_doc]
-scoped notation "π" => Real.pi -- TODO: delete π
+scoped notation "τ" => Real.tau
 
-@[inherit_doc]
-scoped notation "τ" => Real.tau -- TODO: Rename existing τ.
+@[simp]
+theorem lambda_eq_tau_div_four : λ = τ / 4 := by
+  rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
 
+theorem cos_lambda : cos λ = 0 := by
+  exact (Classical.choose_spec exists_cos_eq_zero).2
 @[simp]
 theorem cos_pi_div_two : cos (π / 2) = 0 := by -- TODO: delete π
   rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
   exact (Classical.choose_spec exists_cos_eq_zero).2
-
 @[simp]
 theorem cos_tau_div_four : cos (τ / 4) = 0 := by
-  sorry
+  rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
+  exact cos_lambda
 
+theorem one_le_lambda : (1 : ℝ) ≤ λ := by
+  exact (Classical.choose_spec exists_cos_eq_zero).1.1
 theorem one_le_pi_div_two : (1 : ℝ) ≤ π / 2 := by -- TODO: delete π
   rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
   exact (Classical.choose_spec exists_cos_eq_zero).1.1
-
 theorem one_le_tau_div_four : (1 : ℝ) ≤ τ / 4 := by
-  sorry
+  rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
+  exact one_le_lambda
 
+theorem lambda_le_two : λ ≤ 2 := by
+  exact (Classical.choose_spec exists_cos_eq_zero).1.2
 theorem pi_div_two_le_two : π / 2 ≤ 2 := by
   rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
-  exact (Classical.choose_spec exists_cos_eq_zero).1.2
+  exact lambda_le_two
+theorem tau_div_four_le_two : τ / 4 ≤ 2 := by
+  rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
+  exact lambda_le_two
 
 theorem two_le_pi : (2 : ℝ) ≤ π :=
   (div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by simp)).1
     (by rw [div_self (two_ne_zero' ℝ)]; exact one_le_pi_div_two)
+theorem four_le_tau : (4 : ℝ) ≤ τ :=
+  (div_le_div_iff_of_pos_right (show (0 : ℝ) < 4 by norm_num)).1
+    (by rw [div_self (four_ne_zero' ℝ)]; exact one_le_tau_div_four)
 
 theorem pi_le_four : π ≤ 4 :=
   (div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by norm_num)).1
     (calc
       π / 2 ≤ 2 := pi_div_two_le_two
       _ = 4 / 2 := by norm_num)
+theorem tau_le_eight : τ ≤ 8 :=
+  (div_le_div_iff_of_pos_right (show (0 : ℝ) < 4 by norm_num)).1
+    (calc
+      τ / 4 ≤ 2 := tau_div_four_le_two
+      _ = 8 / 4 := by norm_num)
 
 @[bound]
 theorem pi_pos : 0 < π :=
   lt_of_lt_of_le (by norm_num) two_le_pi
-
 @[bound]
 theorem tau_pos : 0 < τ :=
-  sorry
+  lt_of_lt_of_le (by norm_num) four_le_tau
 
 @[bound]
 theorem pi_nonneg : 0 ≤ π :=
   pi_pos.le
 
--- @[bound]
--- theorem tau_nonneg : 0 ≤ τ :=
---   tau_pos.le
+@[bound]
+theorem tau_nonneg : 0 ≤ τ :=
+  tau_pos.le
 
 @[simp]
 theorem pi_ne_zero : π ≠ 0 :=
@@ -464,6 +492,9 @@ theorem sin_pi_div_two : sin (π / 2) = 1 :=
   this.resolve_right fun h =>
     show ¬(0 : ℝ) < -1 by norm_num <|
       h ▸ sin_pos_of_pos_of_lt_pi pi_div_two_pos (half_lt_self pi_pos)
+@[simp]
+theorem sin_tau_div_four : sin (τ / 4) = 1 := by
+  sorry
 
 theorem sin_add_pi_div_two (x : ℝ) : sin (x + π / 2) = cos x := by simp [sin_add]
 
@@ -487,6 +518,9 @@ theorem cos_nonneg_of_mem_Icc {x : ℝ} (hx : x ∈ Icc (-(π / 2)) (π / 2)) : 
 theorem cos_nonneg_of_neg_pi_div_two_le_of_le {x : ℝ} (hl : -(π / 2) ≤ x) (hu : x ≤ π / 2) :
     0 ≤ cos x :=
   cos_nonneg_of_mem_Icc ⟨hl, hu⟩
+theorem cos_nonneg_of_neg_tau_div_four_le_of_le {x : ℝ} (hl : -(τ / 4) ≤ x) (hu : x ≤ τ / 4) :
+    0 ≤ cos x :=
+  sorry
 
 theorem cos_neg_of_pi_div_two_lt_of_lt {x : ℝ} (hx₁ : π / 2 < x) (hx₂ : x < π + π / 2) :
     cos x < 0 :=
@@ -1222,8 +1256,11 @@ theorem tan_int_mul_pi_sub (x : ℂ) (n : ℤ) : tan (n * π - x) = -tan x :=
 
 theorem exp_antiperiodic : Function.Antiperiodic exp (π * I) := by simp [exp_add, exp_mul_I]
 
-theorem exp_periodic : Function.Periodic exp (2 * π * I) :=
+theorem exp_periodic_with_pi : Function.Periodic exp (2 * π * I) :=
   (mul_assoc (2 : ℂ) π I).symm ▸ exp_antiperiodic.periodic_two_mul
+
+theorem exp_periodic : Function.Periodic exp (τ * I) := by
+  sorry
 
 theorem exp_mul_I_antiperiodic : Function.Antiperiodic (fun x => exp (x * I)) π := by
   simpa only [mul_inv_cancel_right₀ I_ne_zero] using exp_antiperiodic.mul_const I_ne_zero
@@ -1237,7 +1274,7 @@ theorem exp_pi_mul_I : exp (π * I) = -1 :=
 
 @[simp]
 theorem exp_two_pi_mul_I : exp (2 * π * I) = 1 :=
-  exp_periodic.eq.trans exp_zero
+  exp_periodic_with_pi.eq.trans exp_zero
 
 @[simp]
 lemma exp_pi_div_two_mul_I : exp (π / 2 * I) = I := by
@@ -1249,12 +1286,16 @@ lemma exp_neg_pi_div_two_mul_I : exp (-π / 2 * I) = -I := by
     one_mul]
 
 @[simp]
-theorem exp_nat_mul_two_pi_mul_I (n : ℕ) : exp (n * (2 * π * I)) = 1 :=
+theorem exp_nat_mul_two_pi_mul_I (n : ℕ) : exp (n * (2 * π * I)) = 1 := -- TODO: delete π. Here's 2 * π, great!
+  (exp_periodic_with_pi.nat_mul_eq n).trans exp_zero
+
+@[simp]
+theorem exp_nat_mul_tau_mul_I (n : ℕ) : exp (n * (τ * I)) = 1 :=
   (exp_periodic.nat_mul_eq n).trans exp_zero
 
 @[simp]
-theorem exp_int_mul_two_pi_mul_I (n : ℤ) : exp (n * (2 * π * I)) = 1 :=
-  (exp_periodic.int_mul_eq n).trans exp_zero
+theorem exp_int_mul_two_pi_mul_I (n : ℤ) : exp (n * (2 * π * I)) = 1 := -- TODO: delete π. Here's 2 * π, great!
+  (exp_periodic_with_pi.int_mul_eq n).trans exp_zero
 
 @[simp]
 theorem exp_add_pi_mul_I (z : ℂ) : exp (z + π * I) = -exp z :=

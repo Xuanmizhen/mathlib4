@@ -313,7 +313,7 @@ theorem circleIntegral_sub_center_inv_smul_eq_of_differentiable_on_annulus_off_c
       DifferentiableAt ℂ (f ∘ g) z := by
     refine fun z hz => (hd (g z) ⟨?_, hz.2⟩).comp z (hdg _)
     simpa [g, dist_eq, norm_exp, hle, and_comm] using hz.1.1
-  simpa [g, circleMap, exp_periodic _, sub_eq_zero, ← exp_add] using
+  simpa [g, circleMap, exp_periodic_with_pi _, sub_eq_zero, ← exp_add] using
     integral_boundary_rect_eq_zero_of_differentiable_on_off_countable _ ⟨a, 0⟩ ⟨b, 2 * π⟩ _ hs hc hd
 
 /-- **Cauchy-Goursat theorem** for an annulus. If `f : ℂ → E` is continuous on the closed annulus
