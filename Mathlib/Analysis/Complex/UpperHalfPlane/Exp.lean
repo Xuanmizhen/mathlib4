@@ -3,6 +3,7 @@ Copyright (c) 2024 Chris Birkbeck. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Birkbeck
 -/
+-- MODIFIED by Xuanmizhen: Rename some `τ`s to `τj`s
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.Complex.Periodic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
