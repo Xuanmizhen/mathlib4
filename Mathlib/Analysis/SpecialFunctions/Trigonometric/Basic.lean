@@ -138,16 +138,16 @@ theorem cos_pi_div_two : cos (π / 2) = 0 := by -- TODO: delete π
   rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
   exact (Classical.choose_spec exists_cos_eq_zero).2
 
--- @[simp]
--- theorem cos_tau_div_four : cos (τ / 4) = 0 := by
---   sorry
+@[simp]
+theorem cos_tau_div_four : cos (τ / 4) = 0 := by
+  sorry
 
 theorem one_le_pi_div_two : (1 : ℝ) ≤ π / 2 := by -- TODO: delete π
   rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
   exact (Classical.choose_spec exists_cos_eq_zero).1.1
 
--- theorem one_le_tau_div_four : (1 : ℝ) ≤ τ / 4 := by
---   sorry
+theorem one_le_tau_div_four : (1 : ℝ) ≤ τ / 4 := by
+  sorry
 
 theorem pi_div_two_le_two : π / 2 ≤ 2 := by
   rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
@@ -167,9 +167,9 @@ theorem pi_le_four : π ≤ 4 :=
 theorem pi_pos : 0 < π :=
   lt_of_lt_of_le (by norm_num) two_le_pi
 
--- @[bound]
--- theorem tau_pos : 0 < τ :=
---   sorry
+@[bound]
+theorem tau_pos : 0 < τ :=
+  sorry
 
 @[bound]
 theorem pi_nonneg : 0 ≤ π :=
@@ -183,15 +183,15 @@ theorem pi_nonneg : 0 ≤ π :=
 theorem pi_ne_zero : π ≠ 0 :=
   pi_pos.ne'
 
--- @[simp]
--- theorem tau_ne_zero : τ ≠ 0 :=
---   tau_pos.ne'
+@[simp]
+theorem tau_ne_zero : τ ≠ 0 :=
+  tau_pos.ne'
 
 theorem pi_div_two_pos : 0 < π / 2 :=
   half_pos pi_pos
 
--- theorem tau_div_two_pos : 0 < τ / 2 :=
---   half_pos tau_pos
+theorem tau_div_two_pos : 0 < τ / 2 :=
+  half_pos tau_pos
 
 /-
 theorem tau_div_four_pos : 0 < τ / 4 :=
