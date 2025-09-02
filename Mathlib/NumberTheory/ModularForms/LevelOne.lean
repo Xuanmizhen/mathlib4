@@ -27,10 +27,10 @@ namespace SlashInvariantForm
 
 variable [SlashInvariantFormClass F Γ(1) k]
 
-lemma exists_one_half_le_im_and_norm_le (hk : k ≤ 0) (f : F) (τ : ℍ) :
-    ∃ ξ : ℍ, 1 / 2 ≤ ξ.im ∧ ‖f τ‖ ≤ ‖f ξ‖ :=
-  let ⟨γ, hγ, hdenom⟩ := exists_one_half_le_im_smul_and_norm_denom_le τ
-  ⟨γ • τ, hγ, by simpa only [slash_action_eqn'' _ (mem_Gamma_one γ),
+lemma exists_one_half_le_im_and_norm_le (hk : k ≤ 0) (f : F) (τj : ℍ) :
+    ∃ ξ : ℍ, 1 / 2 ≤ ξ.im ∧ ‖f τj‖ ≤ ‖f ξ‖ :=
+  let ⟨γ, hγ, hdenom⟩ := exists_one_half_le_im_smul_and_norm_denom_le τj
+  ⟨γ • τj, hγ, by simpa only [slash_action_eqn'' _ (mem_Gamma_one γ),
     norm_mul, norm_zpow] using le_mul_of_one_le_left (norm_nonneg _) <|
       one_le_zpow_of_nonpos₀ (norm_pos_iff.2 (denom_ne_zero _ _)) hdenom hk⟩
 

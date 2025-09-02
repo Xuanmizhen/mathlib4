@@ -54,19 +54,19 @@ section kernel_defs
 -/
 
 /-- Variant of `jacobiTheta₂'` which we introduce to simplify some formulae. -/
-def jacobiTheta₂'' (z τ : ℂ) : ℂ :=
-  cexp (π * I * z ^ 2 * τ) * (jacobiTheta₂' (z * τ) τ / (2 * π * I) + z * jacobiTheta₂ (z * τ) τ)
+def jacobiTheta₂'' (z τj : ℂ) : ℂ :=
+  cexp (π * I * z ^ 2 * τj) * (jacobiTheta₂' (z * τj) τj / (2 * π * I) + z * jacobiTheta₂ (z * τj) τj)
 
-lemma jacobiTheta₂''_conj (z τ : ℂ) :
-    conj (jacobiTheta₂'' z τ) = jacobiTheta₂'' (conj z) (-conj τ) := by
+lemma jacobiTheta₂''_conj (z τj : ℂ) :
+    conj (jacobiTheta₂'' z τj) = jacobiTheta₂'' (conj z) (-conj τj) := by
   simp [jacobiTheta₂'', jacobiTheta₂'_conj, jacobiTheta₂_conj, ← exp_conj, map_ofNat, div_neg,
     neg_div, jacobiTheta₂'_neg_left]
 
 /-- Restatement of `jacobiTheta₂'_add_left'`: the function `jacobiTheta₂''` is 1-periodic in `z`. -/
-lemma jacobiTheta₂''_add_left (z τ : ℂ) : jacobiTheta₂'' (z + 1) τ = jacobiTheta₂'' z τ := by
+lemma jacobiTheta₂''_add_left (z τj : ℂ) : jacobiTheta₂'' (z + 1) τj = jacobiTheta₂'' z τj := by
   simp only [jacobiTheta₂'', add_mul z 1, one_mul, jacobiTheta₂'_add_left', jacobiTheta₂_add_left']
-  generalize jacobiTheta₂ (z * τ) τ = J
-  generalize jacobiTheta₂' (z * τ) τ = J'
+  generalize jacobiTheta₂ (z * τj) τj = J
+  generalize jacobiTheta₂' (z * τj) τj = J'
   -- clear denominator
   simp_rw [div_add' _ _ _ two_pi_I_ne_zero, ← mul_div_assoc]
   refine congr_arg (· / (2 * π * I)) ?_
@@ -75,25 +75,25 @@ lemma jacobiTheta₂''_add_left (z τ : ℂ) : jacobiTheta₂'' (z + 1) τ = jac
     ← Complex.exp_add]
   congrm (cexp ?_ * ?_) <;> ring
 
-lemma jacobiTheta₂''_neg_left (z τ : ℂ) : jacobiTheta₂'' (-z) τ = -jacobiTheta₂'' z τ := by
+lemma jacobiTheta₂''_neg_left (z τj : ℂ) : jacobiTheta₂'' (-z) τj = -jacobiTheta₂'' z τj := by
   simp [jacobiTheta₂'', jacobiTheta₂'_neg_left, neg_div, -neg_add_rev, ← neg_add]
 
-lemma jacobiTheta₂'_functional_equation' (z τ : ℂ) :
-    jacobiTheta₂' z τ = (-2 * π) / (-I * τ) ^ (3 / 2 : ℂ) * jacobiTheta₂'' z (-1 / τ) := by
-  rcases eq_or_ne τ 0 with rfl | hτ
+lemma jacobiTheta₂'_functional_equation' (z τj : ℂ) :
+    jacobiTheta₂' z τj = (-2 * π) / (-I * τj) ^ (3 / 2 : ℂ) * jacobiTheta₂'' z (-1 / τj) := by
+  rcases eq_or_ne τj 0 with rfl | hτj
   · rw [jacobiTheta₂'_undef _ (by simp), mul_zero, zero_cpow (by simp), div_zero, zero_mul]
   have aux1 : (-2 * π : ℂ) / (2 * π * I) = I := by
     rw [div_eq_iff two_pi_I_ne_zero, mul_comm I, mul_assoc _ I I, I_mul_I, neg_mul, mul_neg,
       mul_one]
-  rw [jacobiTheta₂'_functional_equation, ← mul_one_div _ τ, mul_right_comm _ (cexp _),
+  rw [jacobiTheta₂'_functional_equation, ← mul_one_div _ τj, mul_right_comm _ (cexp _),
     (by rw [cpow_one, ← div_div, div_self (neg_ne_zero.mpr I_ne_zero)] :
-      1 / τ = -I / (-I * τ) ^ (1 : ℂ)), div_mul_div_comm,
-    ← cpow_add _ _ (mul_ne_zero (neg_ne_zero.mpr I_ne_zero) hτ), ← div_mul_eq_mul_div,
+      1 / τj = -I / (-I * τj) ^ (1 : ℂ)), div_mul_div_comm,
+    ← cpow_add _ _ (mul_ne_zero (neg_ne_zero.mpr I_ne_zero) hτj), ← div_mul_eq_mul_div,
     (by norm_num : (1 / 2 + 1 : ℂ) = 3 / 2), mul_assoc (1 / _), mul_assoc (1 / _),
     ← mul_one_div (-2 * π : ℂ), mul_comm _ (1 / _), mul_assoc (1 / _)]
   congr 1
   rw [jacobiTheta₂'', div_add' _ _ _ two_pi_I_ne_zero, ← mul_div_assoc, ← mul_div_assoc,
-    ← div_mul_eq_mul_div (-2 * π : ℂ), mul_assoc, aux1, mul_div z (-1), mul_neg_one, neg_div τ z,
+    ← div_mul_eq_mul_div (-2 * π : ℂ), mul_assoc, aux1, mul_div z (-1), mul_neg_one, neg_div τj z,
     jacobiTheta₂_neg_left, jacobiTheta₂'_neg_left, neg_mul, ← mul_neg, ← mul_neg,
     mul_div, mul_neg_one, neg_div, neg_mul, neg_mul, neg_div]
   congr 2

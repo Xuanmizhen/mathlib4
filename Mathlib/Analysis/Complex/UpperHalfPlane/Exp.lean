@@ -31,14 +31,14 @@ lemma Function.Periodic.norm_qParam_le_of_one_half_le_im {ξ : ℂ} (hξ : 1 / 2
     mul_right_comm, mul_I_re, neg_le_neg_iff, ← ofReal_ofNat, ← ofReal_mul, im_ofReal_mul,
     mul_comm _ π, mul_assoc, le_mul_iff_one_le_right Real.pi_pos, ← div_le_iff₀' two_pos]
 
-theorem UpperHalfPlane.norm_qParam_lt_one (n : ℕ) [NeZero n] (τ : ℍ) : ‖𝕢 n τ‖ < 1 := by
+theorem UpperHalfPlane.norm_qParam_lt_one (n : ℕ) [NeZero n] (τj : ℍ) : ‖𝕢 n τj‖ < 1 := by
   rw [Periodic.norm_qParam, Real.exp_lt_one_iff, neg_mul, coe_im, neg_mul, neg_div, neg_lt_zero,
     div_pos_iff_of_pos_right (mod_cast Nat.pos_of_ne_zero <| NeZero.ne _)]
   positivity
 
-theorem UpperHalfPlane.norm_exp_two_pi_I_lt_one (τ : ℍ) :
-    ‖(Complex.exp (2 * π * Complex.I * τ))‖ < 1 := by
-  simpa [Function.Periodic.norm_qParam, Complex.norm_exp] using τ.norm_qParam_lt_one 1
+theorem UpperHalfPlane.norm_exp_two_pi_I_lt_one (τj : ℍ) :
+    ‖(Complex.exp (2 * π * Complex.I * τj))‖ < 1 := by
+  simpa [Function.Periodic.norm_qParam, Complex.norm_exp] using τj.norm_qParam_lt_one 1
 
 @[deprecated (since := "2025-02-17")] alias Function.Periodic.im_invQParam_pos_of_abs_lt_one :=
   Function.Periodic.im_invQParam_pos_of_norm_lt_one

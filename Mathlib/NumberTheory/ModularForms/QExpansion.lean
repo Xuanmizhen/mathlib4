@@ -12,9 +12,9 @@ import Mathlib.RingTheory.PowerSeries.Basic
 /-!
 # q-expansions of modular forms
 
-We show that a modular form of level `Γ(n)` can be written as `τ ↦ F (𝕢 n τ)` where `F` is
-analytic on the open unit disc, and `𝕢 n` is the parameter `τ ↦ exp (2 * I * π * τ / n)`. As an
-application, we show that cusp forms decay exponentially to 0 as `im τ → ∞`.
+We show that a modular form of level `Γ(n)` can be written as `τj ↦ F (𝕢 n τj)` where `F` is
+analytic on the open unit disc, and `𝕢 n` is the parameter `τj ↦ exp (2 * I * π * τj / n)`. As an
+application, we show that cusp forms decay exponentially to 0 as `im τj → ∞`.
 
 We also define the `q`-expansion of a modular form, either as a power series or as a
 `FormalMultilinearSeries`, and show that it converges to `f` on the upper half plane.
@@ -22,13 +22,13 @@ We also define the `q`-expansion of a modular form, either as a power series or 
 ## Main definitions and results
 
 * `SlashInvariantFormClass.cuspFunction`: for a level `n` slash-invariant form, this is the function
-  `F` such that `f τ = F (exp (2 * π * I * τ / n))`, extended by a choice of limit at `0`.
+  `F` such that `f τj = F (exp (2 * π * I * τj / n))`, extended by a choice of limit at `0`.
 * `ModularFormClass.differentiableAt_cuspFunction`: when `f` is a modular form, its `cuspFunction`
   is differentiable on the open unit disc (including at `0`).
 * `ModularFormClass.qExpansion`: the `q`-expansion of a modular form (defined as the Taylor series
   of its `cuspFunction`), bundled as a `PowerSeries`.
-* `ModularFormClass.hasSum_qExpansion`: the `q`-expansion evaluated at `𝕢 n τ` sums to `f τ`, for
-  `τ` in the upper half plane.
+* `ModularFormClass.hasSum_qExpansion`: the `q`-expansion evaluated at `𝕢 n τj` sums to `f τj`, for
+  `τj` in the upper half plane.
 
 ## TO DO:
 
@@ -64,15 +64,15 @@ theorem periodic_comp_ofComplex [SlashInvariantFormClass F Γ(n) k] :
       ofComplex_apply_of_im_nonpos (not_lt.mp hw)]
 
 /--
-The analytic function `F` such that `f τ = F (exp (2 * π * I * τ / n))`, extended by a choice of
+The analytic function `F` such that `f τj = F (exp (2 * π * I * τj / n))`, extended by a choice of
 limit at `0`.
 -/
 def cuspFunction : ℂ → ℂ := Function.Periodic.cuspFunction n (f ∘ ofComplex)
 
-theorem eq_cuspFunction [NeZero n] [SlashInvariantFormClass F Γ(n) k] (τ : ℍ) :
-    cuspFunction n f (𝕢 n τ) = f τ := by
+theorem eq_cuspFunction [NeZero n] [SlashInvariantFormClass F Γ(n) k] (τj : ℍ) :
+    cuspFunction n f (𝕢 n τj) = f τj := by
   simpa only [comp_apply, ofComplex_apply]
-    using (periodic_comp_ofComplex n f).eq_cuspFunction (NeZero.ne _) τ
+    using (periodic_comp_ofComplex n f).eq_cuspFunction (NeZero.ne _) τj
 
 end SlashInvariantFormClass
 
@@ -127,10 +127,10 @@ lemma hasSum_qExpansion_of_abs_lt [NeZero n] [ModularFormClass F Γ(n) k]
   convert hasSum_taylorSeries_on_ball hdiff qmem using 2 with m
   rw [sub_zero, smul_eq_mul, smul_eq_mul, mul_right_comm, smul_eq_mul, mul_assoc]
 
-lemma hasSum_qExpansion [NeZero n] [ModularFormClass F Γ(n) k] (τ : ℍ) :
-    HasSum (fun m : ℕ ↦ (qExpansion n f).coeff m • 𝕢 n τ ^ m) (f τ) := by
+lemma hasSum_qExpansion [NeZero n] [ModularFormClass F Γ(n) k] (τj : ℍ) :
+    HasSum (fun m : ℕ ↦ (qExpansion n f).coeff m • 𝕢 n τj ^ m) (f τj) := by
   simpa only [eq_cuspFunction n f] using
-    hasSum_qExpansion_of_abs_lt n f (τ.norm_qParam_lt_one n)
+    hasSum_qExpansion_of_abs_lt n f (τj.norm_qParam_lt_one n)
 
 /--
 The `q`-expansion of a level `n` modular form, bundled as a `FormalMultilinearSeries`.
@@ -181,7 +181,7 @@ theorem cuspFunction_apply_zero [NeZero n] [CuspFormClass F Γ(n) k] :
     (zero_at_infty_comp_ofComplex f)
 
 theorem exp_decay_atImInfty [NeZero n] [CuspFormClass F Γ(n) k] :
-    f =O[atImInfty] fun τ ↦ Real.exp (-2 * π * τ.im / n) := by
+    f =O[atImInfty] fun τj ↦ Real.exp (-2 * π * τj.im / n) := by
   simpa only [neg_mul, comp_def, ofComplex_apply, coe_im] using
     ((periodic_comp_ofComplex n f).exp_decay_of_zero_at_inf
       (mod_cast (Nat.pos_iff_ne_zero.mpr (NeZero.ne _)))
