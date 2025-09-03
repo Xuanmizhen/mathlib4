@@ -32,7 +32,7 @@ open scoped Nat Real
 theorem isPrimitiveRoot_exp_of_coprime (i n : ℕ) (h0 : n ≠ 0) (hi : i.Coprime n) :
     IsPrimitiveRoot (exp (2 * π * I * (i / n))) n := by
   rw [IsPrimitiveRoot.iff_def]
-  simp only [← exp_nat_mul, exp_eq_one_iff]
+  simp only [← exp_nat_mul, exp_eq_one_iff_with_pi]
   have hn0 : (n : ℂ) ≠ 0 := mod_cast h0
   constructor
   · use i
@@ -77,7 +77,7 @@ nonrec theorem mem_rootsOfUnity (n : ℕ) [NeZero n] (x : Units ℂ) :
     congr 1
     field_simp
   · rintro ⟨i, _, H⟩
-    rw [← H, ← exp_nat_mul, exp_eq_one_iff]
+    rw [← H, ← exp_nat_mul, exp_eq_one_iff_with_pi]
     use i
     simp [field]
 

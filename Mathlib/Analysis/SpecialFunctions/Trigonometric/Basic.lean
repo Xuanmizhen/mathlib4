@@ -231,7 +231,7 @@ theorem tau_div_four_pos : 0 < τ / 4 := by
   rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
   exact lambda_pos
 
-@[deprecated tau_pos (since := "2025-09-03")]
+-- @[deprecated tau_pos]
 theorem two_pi_pos : 0 < 2 * π := by linarith [pi_pos]
 
 end Real

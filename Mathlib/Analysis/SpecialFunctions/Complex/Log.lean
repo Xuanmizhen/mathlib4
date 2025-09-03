@@ -3,6 +3,7 @@ Copyright (c) 2018 Chris Hughes. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Hughes, Abhimanyu Pallavi Sudhir, Jean Lo, Calle Sönne, Benjamin Davidson
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
@@ -125,7 +126,7 @@ theorem log_inv (x : ℂ) (hx : x.arg ≠ π) : log x⁻¹ = -log x := by rw [lo
 
 theorem two_pi_I_ne_zero : (2 * π * I : ℂ) ≠ 0 := by simp [Real.pi_ne_zero, I_ne_zero]
 
-theorem exp_eq_one_iff {x : ℂ} : exp x = 1 ↔ ∃ n : ℤ, x = n * (2 * π * I) := by
+theorem exp_eq_one_iff_with_pi {x : ℂ} : exp x = 1 ↔ ∃ n : ℤ, x = n * (2 * π * I) := by
   constructor
   · intro h
     rcases existsUnique_add_zsmul_mem_Ioc Real.two_pi_pos x.im (-π) with ⟨n, hn, -⟩
@@ -135,16 +136,23 @@ theorem exp_eq_one_iff {x : ℂ} : exp x = 1 ↔ ∃ n : ℤ, x = n * (2 * π * 
     rw [← log_exp this.1 this.2, exp_periodic_with_pi.int_mul n, h, log_one]
   · rintro ⟨n, rfl⟩
     exact (exp_periodic_with_pi.int_mul n).eq.trans exp_zero
+theorem exp_eq_one_iff {x : ℂ} : exp x = 1 ↔ ∃ n : ℤ, x = n * (τ * I) := by
+  constructor
+  . intro h
+    sorry
+  . sorry
 
 theorem exp_eq_exp_iff_exp_sub_eq_one {x y : ℂ} : exp x = exp y ↔ exp (x - y) = 1 := by
   rw [exp_sub, div_eq_one_iff_eq (exp_ne_zero _)]
 
-theorem exp_eq_exp_iff_exists_int {x y : ℂ} : exp x = exp y ↔ ∃ n : ℤ, x = y + n * (2 * π * I) := by
-  simp only [exp_eq_exp_iff_exp_sub_eq_one, exp_eq_one_iff, sub_eq_iff_eq_add']
+theorem exp_eq_exp_iff_exists_int_with_pi {x y : ℂ} : exp x = exp y ↔ ∃ n : ℤ, x = y + n * (2 * π * I) := by
+  simp only [exp_eq_exp_iff_exp_sub_eq_one, exp_eq_one_iff_with_pi, sub_eq_iff_eq_add']
+theorem exp_eq_exp_iff_exists_int {x y : ℂ} : exp x = exp y ↔ ∃ n : ℤ, x = y + n * (τ * I) := by
+  sorry
 
 theorem log_exp_exists (z : ℂ) :
     ∃ n : ℤ, log (exp z) = z + n * (2 * π * I) := by
-  rw [← exp_eq_exp_iff_exists_int, exp_log]
+  rw [← exp_eq_exp_iff_exists_int_with_pi, exp_log]
   exact exp_ne_zero z
 
 @[simp]
@@ -157,7 +165,7 @@ theorem countable_preimage_exp {s : Set ℂ} : (exp ⁻¹' s).Countable ↔ s.Co
   · rw [← Set.biUnion_preimage_singleton]
     refine hs.biUnion fun z hz => ?_
     rcases em (∃ w, exp w = z) with (⟨w, rfl⟩ | hne)
-    · simp only [Set.preimage, Set.mem_singleton_iff, exp_eq_exp_iff_exists_int, Set.setOf_exists]
+    · simp only [Set.preimage, Set.mem_singleton_iff, exp_eq_exp_iff_exists_int_with_pi, Set.setOf_exists]
       exact Set.countable_iUnion fun m => Set.countable_singleton _
     · push_neg at hne
       simp [Set.preimage, hne]

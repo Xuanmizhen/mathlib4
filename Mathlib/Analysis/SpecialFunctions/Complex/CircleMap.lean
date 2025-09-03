@@ -3,6 +3,7 @@ Copyright (c) 2025 Fabrizio Barroero. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yury Kudryashov, Fabrizio Barroero, Christopher Hoskin
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import Mathlib.Order.Interval.Set.Defs
 
@@ -111,7 +112,7 @@ lemma circleMap_eq_circleMap_iff {a b R : ℝ} (c : ℂ) (h_R : R ≠ 0) :
     circleMap c R a = circleMap c R b ↔ ∃ (n : ℤ), a * I = b * I + n * (2 * π * I) := by
   have : circleMap c R a = circleMap c R b ↔ (exp (a * I)).arg = (exp (b * I)).arg := by
     simp [circleMap, ext_norm_arg_iff, h_R]
-  simp [this, arg_eq_arg_iff, exp_eq_exp_iff_exists_int]
+  simp [this, arg_eq_arg_iff, exp_eq_exp_iff_exists_int_with_pi]
 
 lemma eq_of_circleMap_eq {a b R : ℝ} {c : ℂ} (h_R : R ≠ 0) (h_dist : |a - b| < 2 * π)
     (h : circleMap c R a = circleMap c R b) : a = b := by

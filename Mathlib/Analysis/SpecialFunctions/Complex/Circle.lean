@@ -3,6 +3,7 @@ Copyright (c) 2021 Yury Kudryashov. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yury Kudryashov
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.Complex.Circle
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 
@@ -61,7 +62,7 @@ lemma invOn_arg_exp : InvOn (arg ∘ (↑)) exp (Ioc (-π) π) univ := argPartia
 lemma surjOn_exp_neg_pi_pi : SurjOn exp (Ioc (-π) π) univ := argPartialEquiv.symm.surjOn
 
 lemma exp_eq_exp {x y : ℝ} : exp x = exp y ↔ ∃ m : ℤ, x = y + m * (2 * π) := by
-  rw [Subtype.ext_iff, coe_exp, coe_exp, exp_eq_exp_iff_exists_int]
+  rw [Subtype.ext_iff, coe_exp, coe_exp, exp_eq_exp_iff_exists_int_with_pi]
   refine exists_congr fun n => ?_
   rw [← mul_assoc, ← add_mul, mul_left_inj' I_ne_zero]
   norm_cast
@@ -77,7 +78,7 @@ lemma exp_two_pi_mul_int (n : ℤ) : exp (2 * π * n) = 1 := by
   simpa only [mul_comm] using exp_int_mul_two_pi n
 
 lemma exp_eq_one {r : ℝ} : exp r = 1 ↔ ∃ n : ℤ, r = n * (2 * π) := by
-  simp [Circle.ext_iff, Complex.exp_eq_one_iff, ← mul_assoc, Complex.I_ne_zero,
+  simp [Circle.ext_iff, exp_eq_one_iff_with_pi, ← mul_assoc, Complex.I_ne_zero,
     ← Complex.ofReal_inj]
 
 lemma exp_inj {r s : ℝ} : exp r = exp s ↔ r ≡ s [PMOD (2 * π)] := by
