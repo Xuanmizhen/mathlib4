@@ -3,6 +3,7 @@ Copyright (c) 2019 Calle Sönne. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Calle Sönne
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.Normed.Group.AddCircle
 import Mathlib.Algebra.CharZero.Quotient
@@ -244,7 +245,7 @@ theorem cos_sin_inj {θ ψ : ℝ} (Hcos : cos θ = cos ψ) (Hsin : sin θ = sin 
   exact absurd this one_ne_zero
 
 /-- The sine of a `Real.Angle`. -/
-def sin (θ : Angle) : ℝ :=
+desin_periodic_with_pingle) : ℝ :=
   sin_periodic.lift θ
 
 @[simp]
@@ -306,7 +307,7 @@ theorem sin_neg (θ : Angle) : sin (-θ) = -sin θ := by
 theorem sin_antiperiodic : Function.Antiperiodic sin (π : Angle) := by
   intro θ
   induction θ using Real.Angle.induction_on
-  exact Real.sin_antiperiodic _
+  exact sin_antiperiodic_with_pi _
 
 @[simp]
 theorem sin_add_pi (θ : Angle) : sin (θ + π) = -sin θ :=
