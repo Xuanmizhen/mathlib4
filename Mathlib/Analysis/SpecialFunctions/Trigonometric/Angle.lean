@@ -245,8 +245,8 @@ theorem cos_sin_inj {θ ψ : ℝ} (Hcos : cos θ = cos ψ) (Hsin : sin θ = sin 
   exact absurd this one_ne_zero
 
 /-- The sine of a `Real.Angle`. -/
-desin_periodic_with_pingle) : ℝ :=
-  sin_periodic.lift θ
+def sin (θ : Angle) : ℝ :=
+  sin_periodic_with_pi.lift θ
 
 @[simp]
 theorem sin_coe (x : ℝ) : sin (x : Angle) = Real.sin x :=
@@ -258,7 +258,7 @@ theorem continuous_sin : Continuous sin :=
 
 /-- The cosine of a `Real.Angle`. -/
 def cos (θ : Angle) : ℝ :=
-  cos_periodic.lift θ
+  cos_periodic_with_pi.lift θ
 
 @[simp]
 theorem cos_coe (x : ℝ) : cos (x : Angle) = Real.cos x :=
@@ -307,7 +307,7 @@ theorem sin_neg (θ : Angle) : sin (-θ) = -sin θ := by
 theorem sin_antiperiodic : Function.Antiperiodic sin (π : Angle) := by
   intro θ
   induction θ using Real.Angle.induction_on
-  exact sin_antiperiodic_with_pi _
+  exact Real.sin_antiperiodic_with_pi _
 
 @[simp]
 theorem sin_add_pi (θ : Angle) : sin (θ + π) = -sin θ :=
@@ -330,7 +330,7 @@ theorem cos_neg (θ : Angle) : cos (-θ) = cos θ := by
 theorem cos_antiperiodic : Function.Antiperiodic cos (π : Angle) := by
   intro θ
   induction θ using Real.Angle.induction_on
-  exact Real.cos_antiperiodic _
+  exact Real.cos_antiperiodic_with_pi _
 
 @[simp]
 theorem cos_add_pi (θ : Angle) : cos (θ + π) = -cos θ :=
