@@ -3,6 +3,7 @@ Copyright (c) 2022 Yury Kudryashov. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yury Kudryashov
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.Complex.AbsMax
 import Mathlib.Analysis.Asymptotics.SuperpolynomialDecay
 
@@ -150,7 +151,7 @@ theorem horizontal_strip (hfd : DiffContOnCl ℂ f (im ⁻¹' Ioo a b))
     refine
       ⟨ε * Real.cos (d * b),
         mul_neg_of_neg_of_pos ε₀
-          (Real.cos_pos_of_mem_Ioo <| abs_lt.1 <| (abs_of_pos (mul_pos hd₀ hb)).symm ▸ hb'),
+          (Real.cos_pos_of_mem_Ioo_with_pi <| abs_lt.1 <| (abs_of_pos (mul_pos hd₀ hb)).symm ▸ hb'),
         fun w hw => ?_⟩
     replace hw : |im (aff w)| ≤ d * b := by
       rw [← Real.closedBall_eq_Icc, mem_closedBall, Real.dist_eq] at hw
@@ -352,9 +353,9 @@ nonrec theorem quadrant_I (hd : DiffContOnCl ℂ f (Ioi 0 ×ℂ Ioi 0))
   change ‖(f ∘ exp) ζ‖ ≤ C
   have H : MapsTo exp (im ⁻¹' Ioo 0 (π / 2)) (Ioi 0 ×ℂ Ioi 0) := fun z hz ↦ by
     rw [mem_reProdIm, exp_re, exp_im, mem_Ioi, mem_Ioi]
-    have : 0 < Real.cos z.im := Real.cos_pos_of_mem_Ioo ⟨by linarith [hz.1, hz.2], hz.2⟩
+    have : 0 < Real.cos z.im := Real.cos_pos_of_mem_Ioo_with_pi ⟨by linarith [hz.1, hz.2], hz.2⟩
     have : 0 < Real.sin z.im :=
-      Real.sin_pos_of_mem_Ioo ⟨hz.1, hz.2.trans (half_lt_self Real.pi_pos)⟩
+      Real.sin_pos_of_mem_Ioo_with_pi ⟨hz.1, hz.2.trans (half_lt_self Real.pi_pos)⟩
     constructor <;> positivity
   refine horizontal_strip (hd.comp differentiable_exp.diffContOnCl H) ?_ ?_ ?_ hζ.1 hζ.2
   · -- The estimate `hB` on `f` implies the required estimate on

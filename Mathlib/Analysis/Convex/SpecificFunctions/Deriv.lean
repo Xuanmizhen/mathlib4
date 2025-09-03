@@ -3,6 +3,7 @@ Copyright (c) 2020 Yury Kudryashov. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yury Kudryashov, Sébastien Gouëzel
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.Calculus.Deriv.ZPow
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
@@ -159,9 +160,9 @@ open scoped Real
 theorem strictConcaveOn_sin_Icc : StrictConcaveOn ℝ (Icc 0 π) sin := by
   apply strictConcaveOn_of_deriv2_neg (convex_Icc _ _) continuousOn_sin fun x hx => ?_
   rw [interior_Icc] at hx
-  simp [sin_pos_of_mem_Ioo hx]
+  simp [sin_pos_of_mem_Ioo_with_pi hx]
 
 theorem strictConcaveOn_cos_Icc : StrictConcaveOn ℝ (Icc (-(π / 2)) (π / 2)) cos := by
   apply strictConcaveOn_of_deriv2_neg (convex_Icc _ _) continuousOn_cos fun x hx => ?_
   rw [interior_Icc] at hx
-  simp [cos_pos_of_mem_Ioo hx]
+  simp [cos_pos_of_mem_Ioo_with_pi hx]

@@ -198,6 +198,11 @@ theorem tau_le_eight : τ ≤ 8 :=
     (calc
       τ / 4 ≤ 2 := tau_div_four_le_two
       _ = 8 / 4 := by norm_num)
+theorem tau_div_two_le_four : τ / 2 ≤ 4 := by
+  apply (mul_le_mul_iff_left₀ (zero_lt_two' ℝ)).1
+  rw [div_mul_cancel₀ _ (two_ne_zero' ℝ)]
+  norm_num
+  exact tau_le_eight
 
 @[bound]
 theorem lambda_pos : 0 < λ :=
@@ -208,6 +213,8 @@ theorem pi_pos : 0 < π := -- TODO: delete π
 @[bound]
 theorem tau_pos : 0 < τ :=
   lt_of_lt_of_le (by norm_num) four_le_tau
+theorem tau_div_two_pos : 0 < τ / 2 :=
+  half_pos tau_pos
 
 @[bound]
 theorem lambda_nonneg : 0 ≤ λ :=
@@ -227,11 +234,11 @@ theorem pi_ne_zero : π ≠ 0 := -- TODO: delete π
 @[simp]
 theorem tau_ne_zero : τ ≠ 0 :=
   tau_pos.ne'
+theorem tau_div_two_ne_zero : τ / 2 ≠ 0 :=
+  tau_div_two_pos.ne'
 
 theorem pi_div_two_pos : 0 < π / 2 := -- TODO: delete π
   half_pos pi_pos
-theorem tau_div_two_pos : 0 < τ / 2 :=
-  half_pos tau_pos
 theorem tau_div_four_pos : 0 < τ / 4 := by
   rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
   exact lambda_pos
@@ -617,30 +624,48 @@ theorem cos_add_int_mul_half_tau (x : ℝ) (n : ℤ) : cos (x + n * (τ / 2)) = 
 
 theorem cos_add_nat_mul_pi (x : ℝ) (n : ℕ) : cos (x + n * π) = (-1) ^ n * cos x :=
   cos_antiperiodic_with_pi.add_nat_mul_eq n
+theorem cos_add_nat_mul_half_tau (x : ℝ) (n : ℕ) : cos (x + n * (τ / 2)) = (-1) ^ n * cos x :=
+  cos_antiperiodic.add_nat_mul_eq n
 
 theorem cos_sub_int_mul_pi (x : ℝ) (n : ℤ) : cos (x - n * π) = (-1) ^ n * cos x :=
   n.cast_negOnePow ℝ ▸ cos_antiperiodic_with_pi.sub_int_mul_eq n
+theorem cos_sub_int_mul_half_tau (x : ℝ) (n : ℤ) : cos (x - n * (τ / 2)) = (-1) ^ n * cos x :=
+  n.cast_negOnePow ℝ ▸ cos_antiperiodic.sub_int_mul_eq n
 
 theorem cos_sub_nat_mul_pi (x : ℝ) (n : ℕ) : cos (x - n * π) = (-1) ^ n * cos x :=
   cos_antiperiodic_with_pi.sub_nat_mul_eq n
+theorem cos_sub_nat_mul_half_tau (x : ℝ) (n : ℕ) : cos (x - n * (τ / 2)) = (-1) ^ n * cos x :=
+  cos_antiperiodic.sub_nat_mul_eq n
 
 theorem cos_int_mul_pi_sub (x : ℝ) (n : ℤ) : cos (n * π - x) = (-1) ^ n * cos x :=
   n.cast_negOnePow ℝ ▸ cos_neg x ▸ cos_antiperiodic_with_pi.int_mul_sub_eq n
+theorem cos_int_mul_half_tau_sub (x : ℝ) (n : ℤ) : cos (n * (τ / 2) - x) = (-1) ^ n * cos x :=
+  n.cast_negOnePow ℝ ▸ cos_neg x ▸ cos_antiperiodic.int_mul_sub_eq n
 
 theorem cos_nat_mul_pi_sub (x : ℝ) (n : ℕ) : cos (n * π - x) = (-1) ^ n * cos x :=
   cos_neg x ▸ cos_antiperiodic_with_pi.nat_mul_sub_eq n
+theorem cos_nat_mul_half_tau_sub (x : ℝ) (n : ℕ) : cos (n * (τ / 2) - x) = (-1) ^ n * cos x :=
+  cos_neg x ▸ cos_antiperiodic.nat_mul_sub_eq n
 
 theorem cos_nat_mul_two_pi_add_pi (n : ℕ) : cos (n * (2 * π) + π) = -1 := by
   simpa only [cos_zero] using (cos_periodic_with_pi.nat_mul n).add_antiperiod_eq cos_antiperiodic_with_pi
+theorem cos_nat_mul_tau_add_half_tau (n : ℕ) : cos (n * τ + τ / 2) = -1 := by
+  simpa only [cos_zero] using (cos_periodic.nat_mul n).add_antiperiod_eq cos_antiperiodic
 
 theorem cos_int_mul_two_pi_add_pi (n : ℤ) : cos (n * (2 * π) + π) = -1 := by
   simpa only [cos_zero] using (cos_periodic_with_pi.int_mul n).add_antiperiod_eq cos_antiperiodic_with_pi
+theorem cos_int_mul_tau_add_half_tau (n : ℤ) : cos (n * τ + τ / 2) = -1 := by
+  simpa only [cos_zero] using (cos_periodic.int_mul n).add_antiperiod_eq cos_antiperiodic
 
 theorem cos_nat_mul_two_pi_sub_pi (n : ℕ) : cos (n * (2 * π) - π) = -1 := by
   simpa only [cos_zero] using (cos_periodic_with_pi.nat_mul n).sub_antiperiod_eq cos_antiperiodic_with_pi
+theorem cos_nat_mul_tau_sub_half_tau (n : ℕ) : cos (n * τ - τ / 2) = -1 := by
+  simpa only [cos_zero] using (cos_periodic.nat_mul n).sub_antiperiod_eq cos_antiperiodic
 
 theorem cos_int_mul_two_pi_sub_pi (n : ℤ) : cos (n * (2 * π) - π) = -1 := by
   simpa only [cos_zero] using (cos_periodic_with_pi.int_mul n).sub_antiperiod_eq cos_antiperiodic_with_pi
+theorem cos_int_mul_tau_sub_half_tau (n : ℤ) : cos (n * τ - τ / 2) = -1 := by
+  simpa only [cos_zero] using (cos_periodic.int_mul n).sub_antiperiod_eq cos_antiperiodic
 
 theorem sin_pos_of_pos_of_lt_pi {x : ℝ} (h0x : 0 < x) (hxp : x < π) : 0 < sin x :=
   if hx2 : x ≤ 2 then sin_pos_of_pos_of_le_two h0x hx2
@@ -649,30 +674,58 @@ theorem sin_pos_of_pos_of_lt_pi {x : ℝ} (h0x : 0 < x) (hxp : x < π) : 0 < sin
     have : π - x ≤ 2 :=
       sub_le_iff_le_add.2 (le_trans pi_le_four (this ▸ add_le_add_left (le_of_not_ge hx2) _))
     sin_pi_sub x ▸ sin_pos_of_pos_of_le_two (sub_pos.2 hxp) this
+theorem sin_pos_of_pos_of_lt_tau_div_two {x : ℝ} (h0x : 0 < x) (hxp : x < τ / 2) : 0 < sin x :=
+  if hx2 : x ≤ 2 then sin_pos_of_pos_of_le_two h0x hx2
+  else
+    have : (2 : ℝ) + 2 = 4 := by norm_num
+    have : τ / 2 - x ≤ 2 :=
+      sub_le_iff_le_add.2 (le_trans tau_div_two_le_four (this ▸ add_le_add_left (le_of_not_ge hx2) _))
+    sin_tau_div_two_sub x ▸ sin_pos_of_pos_of_le_two (sub_pos.2 hxp) this
 
-theorem sin_pos_of_mem_Ioo {x : ℝ} (hx : x ∈ Ioo 0 π) : 0 < sin x :=
+theorem sin_pos_of_mem_Ioo_with_pi {x : ℝ} (hx : x ∈ Ioo 0 π) : 0 < sin x :=
   sin_pos_of_pos_of_lt_pi hx.1 hx.2
+theorem sin_pos_of_mem_Ioo {x : ℝ} (hx : x ∈ Ioo 0 (τ / 2)) : 0 < sin x :=
+  sin_pos_of_pos_of_lt_tau_div_two hx.1 hx.2
 
-theorem sin_nonneg_of_mem_Icc {x : ℝ} (hx : x ∈ Icc 0 π) : 0 ≤ sin x := by
+theorem sin_nonneg_of_mem_Icc_with_pi {x : ℝ} (hx : x ∈ Icc 0 π) : 0 ≤ sin x := by
   rw [← closure_Ioo pi_ne_zero.symm] at hx
+  exact
+    closure_lt_subset_le continuous_const continuous_sin
+      (closure_mono (fun y => sin_pos_of_mem_Ioo_with_pi) hx)
+theorem sin_nonneg_of_mem_Icc {x : ℝ} (hx : x ∈ Icc 0 (τ / 2)) : 0 ≤ sin x := by
+  rw [← closure_Ioo tau_div_two_ne_zero.symm] at hx
   exact
     closure_lt_subset_le continuous_const continuous_sin
       (closure_mono (fun y => sin_pos_of_mem_Ioo) hx)
 
 theorem sin_nonneg_of_nonneg_of_le_pi {x : ℝ} (h0x : 0 ≤ x) (hxp : x ≤ π) : 0 ≤ sin x :=
+  sin_nonneg_of_mem_Icc_with_pi ⟨h0x, hxp⟩
+theorem sin_nonneg_of_nonneg_of_le_tau_div_two {x : ℝ} (h0x : 0 ≤ x) (hxp : x ≤ τ / 2) : 0 ≤ sin x :=
   sin_nonneg_of_mem_Icc ⟨h0x, hxp⟩
 
 theorem sin_neg_of_neg_of_neg_pi_lt {x : ℝ} (hx0 : x < 0) (hpx : -π < x) : sin x < 0 :=
   neg_pos.1 <| sin_neg x ▸ sin_pos_of_pos_of_lt_pi (neg_pos.2 hx0) (neg_lt.1 hpx)
+theorem sin_neg_of_neg_of_neg_tau_div_two_lt {x : ℝ} (hx0 : x < 0) (hpx : -(τ / 2) < x) : sin x < 0 :=
+  neg_pos.1 <| sin_neg x ▸ sin_pos_of_pos_of_lt_tau_div_two (neg_pos.2 hx0) (neg_lt.1 hpx)
 
 theorem sin_nonpos_of_nonpos_of_neg_pi_le {x : ℝ} (hx0 : x ≤ 0) (hpx : -π ≤ x) : sin x ≤ 0 :=
   neg_nonneg.1 <| sin_neg x ▸ sin_nonneg_of_nonneg_of_le_pi (neg_nonneg.2 hx0) (neg_le.1 hpx)
+theorem sin_nonpos_of_nonpos_of_neg_tau_div_two_le {x : ℝ} (hx0 : x ≤ 0) (hpx : -(τ / 2) ≤ x) : sin x ≤ 0 :=
+  neg_nonneg.1 <| sin_neg x ▸ sin_nonneg_of_nonneg_of_le_tau_div_two (neg_nonneg.2 hx0) (neg_le.1 hpx)
 
+-- ignore deprecated
 @[deprecated (since := "2025-07-27")]
 alias sin_nonpos_of_nonnpos_of_neg_pi_le := sin_nonpos_of_nonpos_of_neg_pi_le
 
+
 lemma sin_lambda : sin λ = 1 :=
-  sorry
+  have : sin λ = 1 ∨ sin λ = -1 := by
+    simpa [sq, mul_self_eq_one_iff] using sin_sq_add_cos_sq Real.lambda
+  this.resolve_right fun h =>
+    show ¬(0 : ℝ) < -1 by norm_num <|
+      h ▸ sin_pos_of_pos_of_lt_tau_div_two lambda_pos ( calc
+        λ = τ / 4 := lambda_eq_tau_div_four
+        _ < τ / 2 := (div_lt_div_iff_of_pos_left tau_pos zero_lt_four zero_lt_two).2 (by norm_num) )
 @[simp]
 theorem sin_pi_div_two : sin (π / 2) = 1 :=
   have : sin (π / 2) = 1 ∨ sin (π / 2) = -1 := by
@@ -685,23 +738,32 @@ theorem sin_tau_div_four : sin (τ / 4) = 1 := by
   rw [← lambda_eq_tau_div_four, sin_lambda]
 
 theorem sin_add_pi_div_two (x : ℝ) : sin (x + π / 2) = cos x := by simp [sin_add]
+theorem sin_add_tau_div_four (x : ℝ) : sin (x + τ / 4) = cos x := by simp [sin_add]
 
 theorem sin_sub_pi_div_two (x : ℝ) : sin (x - π / 2) = -cos x := by simp [sub_eq_add_neg, sin_add]
+theorem sin_sub_tau_div_four (x : ℝ) : sin (x - τ / 4) = -cos x := by simp [sub_eq_add_neg, sin_add]
 
 theorem sin_pi_div_two_sub (x : ℝ) : sin (π / 2 - x) = cos x := by simp [sub_eq_add_neg, sin_add]
+theorem sin_tau_div_four_sub (x : ℝ) : sin (τ / 4 - x) = cos x := by simp [sub_eq_add_neg, sin_add]
 
 theorem cos_add_pi_div_two (x : ℝ) : cos (x + π / 2) = -sin x := by simp [cos_add]
+theorem cos_add_tau_div_four (x : ℝ) : cos (x + τ / 4) = -sin x := by simp [cos_add]
 
 theorem cos_sub_pi_div_two (x : ℝ) : cos (x - π / 2) = sin x := by simp [sub_eq_add_neg, cos_add]
+theorem cos_sub_tau_div_four (x : ℝ) : cos (x - τ / 4) = sin x := by simp [sub_eq_add_neg, cos_add]
 
 theorem cos_pi_div_two_sub (x : ℝ) : cos (π / 2 - x) = sin x := by
   rw [← cos_neg, neg_sub, cos_sub_pi_div_two]
+theorem cos_tau_div_four_sub (x : ℝ) : cos (τ / 4 - x) = sin x := by
+  rw [← cos_neg, neg_sub, cos_sub_tau_div_four]
 
-theorem cos_pos_of_mem_Ioo {x : ℝ} (hx : x ∈ Ioo (-(π / 2)) (π / 2)) : 0 < cos x :=
-  sin_add_pi_div_two x ▸ sin_pos_of_mem_Ioo ⟨by linarith [hx.1], by linarith [hx.2]⟩
+theorem cos_pos_of_mem_Ioo_with_pi {x : ℝ} (hx : x ∈ Ioo (-(π / 2)) (π / 2)) : 0 < cos x :=
+  sin_add_pi_div_two x ▸ sin_pos_of_mem_Ioo_with_pi ⟨by linarith [hx.1], by linarith [hx.2]⟩
+theorem cos_pos_of_mem_Ioo {x : ℝ} (hx : x ∈ Ioo (-(τ / 4)) (τ / 4)) : 0 < cos x :=
+  sin_add_tau_div_four x ▸ sin_pos_of_mem_Ioo ⟨by linarith [hx.1], by linarith [hx.2]⟩
 
 theorem cos_nonneg_of_mem_Icc {x : ℝ} (hx : x ∈ Icc (-(π / 2)) (π / 2)) : 0 ≤ cos x :=
-  sin_add_pi_div_two x ▸ sin_nonneg_of_mem_Icc ⟨by linarith [hx.1], by linarith [hx.2]⟩
+  sin_add_pi_div_two x ▸ sin_nonneg_of_mem_Icc_with_pi ⟨by linarith [hx.1], by linarith [hx.2]⟩
 
 theorem cos_nonneg_of_neg_pi_div_two_le_of_le {x : ℝ} (hl : -(π / 2) ≤ x) (hu : x ≤ π / 2) :
     0 ≤ cos x :=
@@ -712,7 +774,10 @@ theorem cos_nonneg_of_neg_tau_div_four_le_of_le {x : ℝ} (hl : -(τ / 4) ≤ x)
 
 theorem cos_neg_of_pi_div_two_lt_of_lt {x : ℝ} (hx₁ : π / 2 < x) (hx₂ : x < π + π / 2) :
     cos x < 0 :=
-  neg_pos.1 <| cos_pi_sub x ▸ cos_pos_of_mem_Ioo ⟨by linarith, by linarith⟩
+  neg_pos.1 <| cos_pi_sub x ▸ cos_pos_of_mem_Ioo_with_pi ⟨by linarith, by linarith⟩
+theorem cos_neg_of_tau_div_four_lt_of_lt {x : ℝ} (hx₁ : τ / 4 < x) (hx₂ : x < τ / 2 + τ / 4) :
+    cos x < 0 :=
+  neg_pos.1 <| cos_tau_div_two_sub x ▸ cos_pos_of_mem_Ioo ⟨by linarith, by linarith⟩
 
 theorem cos_nonpos_of_pi_div_two_le_of_le {x : ℝ} (hx₁ : π / 2 ≤ x) (hx₂ : x ≤ π + π / 2) :
     cos x ≤ 0 :=
@@ -799,7 +864,7 @@ theorem sin_lt_sin_of_lt_of_le_pi_div_two {x y : ℝ} (hx₁ : -(π / 2) ≤ x) 
     (hxy : x < y) : sin x < sin y := by
   rw [← sub_pos, sin_sub_sin]
   have : 0 < sin ((y - x) / 2) := by apply sin_pos_of_pos_of_lt_pi <;> linarith
-  have : 0 < cos ((y + x) / 2) := by refine cos_pos_of_mem_Ioo ⟨?_, ?_⟩ <;> linarith
+  have : 0 < cos ((y + x) / 2) := by refine cos_pos_of_mem_Ioo_with_pi ⟨?_, ?_⟩ <;> linarith
   positivity
 
 theorem strictMonoOn_sin : StrictMonoOn sin (Icc (-(π / 2)) (π / 2)) := fun _ hx _ hy hxy =>
@@ -1138,7 +1203,7 @@ theorem tan_pi_div_three : tan (π / 3) = √3 := by
 
 theorem tan_pos_of_pos_of_lt_pi_div_two {x : ℝ} (h0x : 0 < x) (hxp : x < π / 2) : 0 < tan x := by
   rw [tan_eq_sin_div_cos]
-  exact div_pos (sin_pos_of_pos_of_lt_pi h0x (by linarith)) (cos_pos_of_mem_Ioo ⟨by linarith, hxp⟩)
+  exact div_pos (sin_pos_of_pos_of_lt_pi h0x (by linarith)) (cos_pos_of_mem_Ioo_with_pi ⟨by linarith, hxp⟩)
 
 theorem tan_nonneg_of_nonneg_of_le_pi_div_two {x : ℝ} (h0x : 0 ≤ x) (hxp : x ≤ π / 2) : 0 ≤ tan x :=
   match lt_or_eq_of_le h0x, lt_or_eq_of_le hxp with
@@ -1156,7 +1221,7 @@ theorem tan_nonpos_of_nonpos_of_neg_pi_div_two_le {x : ℝ} (hx0 : x ≤ 0) (hpx
 theorem strictMonoOn_tan : StrictMonoOn tan (Ioo (-(π / 2)) (π / 2)) := by
   rintro x hx y hy hlt
   rw [tan_eq_sin_div_cos, tan_eq_sin_div_cos,
-    div_lt_div_iff₀ (cos_pos_of_mem_Ioo hx) (cos_pos_of_mem_Ioo hy), mul_comm, ← sub_pos, ← sin_sub]
+    div_lt_div_iff₀ (cos_pos_of_mem_Ioo_with_pi hx) (cos_pos_of_mem_Ioo_with_pi hy), mul_comm, ← sub_pos, ← sin_sub]
   exact sin_pos_of_pos_of_lt_pi (sub_pos.2 hlt) <| by linarith [hx.1, hy.2]
 
 theorem tan_lt_tan_of_lt_of_lt_pi_div_two {x y : ℝ} (hx₁ : -(π / 2) < x) (hy₂ : y < π / 2)
@@ -1225,7 +1290,7 @@ theorem tendsto_cos_pi_div_two : Tendsto cos (𝓝[<] (π / 2)) (𝓝[>] 0) := b
   · convert continuous_cos.continuousWithinAt.tendsto
     simp
   · filter_upwards [Ioo_mem_nhdsLT (neg_lt_self pi_div_two_pos)] with x hx
-    exact cos_pos_of_mem_Ioo hx
+    exact cos_pos_of_mem_Ioo_with_pi hx
 
 theorem tendsto_tan_pi_div_two : Tendsto tan (𝓝[<] (π / 2)) atTop := by
   convert tendsto_cos_pi_div_two.inv_tendsto_nhdsGT_zero.atTop_mul_pos zero_lt_one
@@ -1241,7 +1306,7 @@ theorem tendsto_cos_neg_pi_div_two : Tendsto cos (𝓝[>] (-(π / 2))) (𝓝[>] 
   · convert continuous_cos.continuousWithinAt.tendsto
     simp
   · filter_upwards [Ioo_mem_nhdsGT (neg_lt_self pi_div_two_pos)] with x hx
-    exact cos_pos_of_mem_Ioo hx
+    exact cos_pos_of_mem_Ioo_with_pi hx
 
 theorem tendsto_tan_neg_pi_div_two : Tendsto tan (𝓝[>] (-(π / 2))) atBot := by
   convert tendsto_cos_neg_pi_div_two.inv_tendsto_nhdsGT_zero.atTop_mul_neg (by norm_num)

@@ -3,6 +3,7 @@ Copyright (c) 2022 David Loeffler. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: David Loeffler, Yaël Dillies, Bhavik Mehta
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.Convex.SpecificFunctions.Deriv
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 
@@ -169,10 +170,10 @@ theorem lt_tan {x : ℝ} (h1 : 0 < x) (h2 : x < π / 2) : x < tan x := by
   have intU : interior U = Ioo 0 (π / 2) := interior_Ico
   have half_pi_pos : 0 < π / 2 := div_pos pi_pos two_pos
   have cos_pos {y : ℝ} (hy : y ∈ U) : 0 < cos y := by
-    exact cos_pos_of_mem_Ioo (Ico_subset_Ioo_left (neg_lt_zero.mpr half_pi_pos) hy)
+    exact cos_pos_of_mem_Ioo_with_pi (Ico_subset_Ioo_left (neg_lt_zero.mpr half_pi_pos) hy)
   have sin_pos {y : ℝ} (hy : y ∈ interior U) : 0 < sin y := by
     rw [intU] at hy
-    exact sin_pos_of_mem_Ioo (Ioo_subset_Ioo_right (div_le_self pi_pos.le one_le_two) hy)
+    exact sin_pos_of_mem_Ioo_with_pi (Ioo_subset_Ioo_right (div_le_self pi_pos.le one_le_two) hy)
   have tan_cts_U : ContinuousOn tan U := by
     apply ContinuousOn.mono continuousOn_tan
     intro z hz
@@ -212,7 +213,7 @@ theorem cos_lt_one_div_sqrt_sq_add_one {x : ℝ} (hx1 : -(3 * π / 2) ≤ x) (hx
   have hy3 : ↑0 < y ^ 2 + 1 := by linarith [sq_nonneg y]
   rcases lt_or_ge y (π / 2) with (hy2' | hy1')
   · -- Main case : `0 < y < π / 2`
-    have hy4 : 0 < cos y := cos_pos_of_mem_Ioo ⟨by linarith, hy2'⟩
+    have hy4 : 0 < cos y := cos_pos_of_mem_Ioo_with_pi ⟨by linarith, hy2'⟩
     rw [← abs_of_nonneg (cos_nonneg_of_mem_Icc ⟨by linarith, hy2'.le⟩), ←
       abs_of_nonneg (one_div_nonneg.mpr (sqrt_nonneg _)), ← sq_lt_sq, div_pow, one_pow,
       sq_sqrt hy3.le, lt_one_div (pow_pos hy4 _) hy3, ← inv_one_add_tan_sq hy4.ne', one_div,
