@@ -3,6 +3,7 @@
 **This repository is just a fork of the Mathlib. And the following content may not be correct for**
 **this repository.**
 
+These are from the parent repo.
 ![GitHub CI](https://github.com/leanprover-community/mathlib4/actions/workflows/build.yml/badge.svg?branch=master)
 [![Bors enabled](https://bors.tech/images/badge_small.svg)](https://mathlib-bors-ca18eefec4cb.herokuapp.com/repositories/16)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://leanprover.zulipchat.com)
@@ -11,6 +12,12 @@
 [Mathlib](https://leanprover-community.github.io) is a user maintained library for the [Lean theorem prover](https://leanprover.github.io).
 It contains both programming infrastructure and mathematics,
 as well as tactics that use the former and allow to develop the latter.
+
+## When Mathlib meets τ (tau)
+[The Tau Manifesto](https://www.tauday.com/tau-manifesto) introduces τ = 6.28318..., which also
+numerically equals `2 * π`.
+This fork of Mathlib aims to witness τ's correctness through rewriting Mathlib with τ! Feel free to
+send pull requests if you want to help out.
 
 ## Installation
 
