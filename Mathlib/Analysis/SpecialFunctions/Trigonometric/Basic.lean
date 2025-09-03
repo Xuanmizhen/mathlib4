@@ -115,8 +115,9 @@ theorem exists_cos_eq_zero : 0 ∈ cos '' Icc (1 : ℝ) 2 :=
   intermediate_value_Icc' (by simp) continuousOn_cos
     ⟨le_of_lt cos_two_neg, le_of_lt cos_one_pos⟩
 
--- TODO: write a doc
-protected noncomputable def lambda : ℝ :=
+/-- The right angle λ = τ / 4
+-/
+protected noncomputable def lambda : ℝ := -- TODO: provide more details from the Tau Manifesto
   Classical.choose exists_cos_eq_zero
 
 @[inherit_doc]
@@ -167,21 +168,21 @@ theorem one_le_tau_div_four : (1 : ℝ) ≤ τ / 4 := by
 
 theorem lambda_le_two : λ ≤ 2 := by
   exact (Classical.choose_spec exists_cos_eq_zero).1.2
-theorem pi_div_two_le_two : π / 2 ≤ 2 := by
+theorem pi_div_two_le_two : π / 2 ≤ 2 := by -- TODO: delete π
   rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
   exact lambda_le_two
 theorem tau_div_four_le_two : τ / 4 ≤ 2 := by
   rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
   exact lambda_le_two
 
-theorem two_le_pi : (2 : ℝ) ≤ π :=
+theorem two_le_pi : (2 : ℝ) ≤ π := -- TODO: delete π
   (div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by simp)).1
     (by rw [div_self (two_ne_zero' ℝ)]; exact one_le_pi_div_two)
 theorem four_le_tau : (4 : ℝ) ≤ τ :=
   (div_le_div_iff_of_pos_right (show (0 : ℝ) < 4 by norm_num)).1
     (by rw [div_self (four_ne_zero' ℝ)]; exact one_le_tau_div_four)
 
-theorem pi_le_four : π ≤ 4 :=
+theorem pi_le_four : π ≤ 4 := -- TODO: delete π
   (div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by norm_num)).1
     (calc
       π / 2 ≤ 2 := pi_div_two_le_two
@@ -193,39 +194,44 @@ theorem tau_le_eight : τ ≤ 8 :=
       _ = 8 / 4 := by norm_num)
 
 @[bound]
-theorem pi_pos : 0 < π :=
+theorem lambda_pos : 0 < λ :=
+  lt_of_lt_of_le (by norm_num) one_le_lambda
+@[bound]
+theorem pi_pos : 0 < π := -- TODO: delete π
   lt_of_lt_of_le (by norm_num) two_le_pi
 @[bound]
 theorem tau_pos : 0 < τ :=
   lt_of_lt_of_le (by norm_num) four_le_tau
 
 @[bound]
-theorem pi_nonneg : 0 ≤ π :=
+theorem lambda_nonneg : 0 ≤ λ :=
+  lambda_pos.le
+@[bound]
+theorem pi_nonneg : 0 ≤ π := -- TODO: delete π
   pi_pos.le
-
 @[bound]
 theorem tau_nonneg : 0 ≤ τ :=
   tau_pos.le
 
 @[simp]
-theorem pi_ne_zero : π ≠ 0 :=
+theorem lambda_ne_zero : λ ≠ 0 :=
+  lambda_pos.ne'
+@[simp]
+theorem pi_ne_zero : π ≠ 0 := -- TODO: delete π
   pi_pos.ne'
-
 @[simp]
 theorem tau_ne_zero : τ ≠ 0 :=
   tau_pos.ne'
 
-theorem pi_div_two_pos : 0 < π / 2 :=
+theorem pi_div_two_pos : 0 < π / 2 := -- TODO: delete π
   half_pos pi_pos
-
 theorem tau_div_two_pos : 0 < τ / 2 :=
   half_pos tau_pos
+theorem tau_div_four_pos : 0 < τ / 4 := by
+  rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
+  exact lambda_pos
 
-/-
-theorem tau_div_four_pos : 0 < τ / 4 :=
-  sorry
--/
-
+@[deprecated tau_pos (since := "2025-09-03")]
 theorem two_pi_pos : 0 < 2 * π := by linarith [pi_pos]
 
 end Real
@@ -242,6 +248,15 @@ def evalRealPi : PositivityExt where eval {u α} _zα _pα e := do
     pure (.positive q(Real.pi_pos))
   | _, _, _ => throwError "not Real.pi"
 
+/-- Extension for the `positivity` tactic: `τ` is always positive. -/
+@[positivity Real.tau]
+def evalRealTau : PositivityExt where eval {u α} _zα _pα e := do
+  match u, α, e with
+  | 0, ~q(ℝ), ~q(Real.tau) =>
+    assertInstancesCommute
+    pure (.positive q(Real.tau_pos))
+  | _, _, _ => throwError "not Real.tau"
+
 end Mathlib.Meta.Positivity
 
 namespace NNReal
@@ -253,15 +268,24 @@ open Real NNReal
 /-- `π` considered as a nonnegative real. -/
 noncomputable def pi : ℝ≥0 :=
   ⟨π, Real.pi_pos.le⟩
+/-- `τ` considered as a nonnegative real. -/
+noncomputable def tau : ℝ≥0 :=
+  ⟨τ, Real.tau_pos.le⟩
 
 @[simp]
 theorem coe_real_pi : (pi : ℝ) = π :=
   rfl
+@[simp]
+theorem coe_real_tau : (tau : ℝ) = τ :=
+  rfl
 
 theorem pi_pos : 0 < pi := mod_cast Real.pi_pos
+theorem tau_pos : 0 < tau := mod_cast Real.tau_pos
 
 theorem pi_ne_zero : pi ≠ 0 :=
   pi_pos.ne'
+theorem tau_ne_zero : tau ≠ 0 :=
+  tau_pos.ne'
 
 end NNReal
 
@@ -270,6 +294,9 @@ namespace Real
 @[simp]
 theorem sin_pi : sin π = 0 := by
   rw [← mul_div_cancel_left₀ π (two_ne_zero' ℝ), two_mul, add_div, sin_add, cos_pi_div_two]; simp
+@[simp]
+theorem sin_tau_div_two : sin (τ / 2) = 1 := by
+  sorry
 
 @[simp]
 theorem cos_pi : cos π = -1 := by
@@ -278,6 +305,9 @@ theorem cos_pi : cos π = -1 := by
 
 @[simp]
 theorem sin_two_pi : sin (2 * π) = 0 := by simp [two_mul, sin_add]
+@[simp]
+theorem sin_tau : sin τ = 0 := by
+  sorry -- should be written in a fundamentally different way
 
 @[simp]
 theorem cos_two_pi : cos (2 * π) = 1 := by simp [two_mul, cos_add]
