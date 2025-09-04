@@ -5,7 +5,7 @@ Authors: David Loeffler
 -/
 -- MODIFIED by Xuanmizhen: Rename some `τ`s to `τj`s
 import Mathlib.Analysis.Calculus.SmoothSeries
-import Mathlib.Analysis.NormedSpace.OperatorNorm.Prod
+import Mathlib.Analysis.Normed.Operator.Prod
 import Mathlib.Analysis.SpecialFunctions.Gaussian.PoissonSummation
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 
