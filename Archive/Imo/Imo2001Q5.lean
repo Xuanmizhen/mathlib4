@@ -203,11 +203,11 @@ lemma x_eq : s.x = 2 * π / 9 := by
   have notleft : Real.cos (2 * y) * 2 ≠ 1 := by
     unfold y; rw [mul_div_cancel₀ _ two_ne_zero]; by_contra h
     rw [← eq_div_iff_mul_eq two_ne_zero, ← Real.cos_pi_div_three] at h
-    apply Real.injOn_cos ⟨s.x_pos.le, by bx⟩ ⟨by positivity, by bound⟩ at h
+    apply Real.injOn_cos_with_pi ⟨s.x_pos.le, by bx⟩ ⟨by positivity, by bound⟩ at h
     exact s.x_lt_pi_div_three.ne h
   replace iden := iden.resolve_left notleft
   rw [← Real.cos_pi_div_two] at iden
-  apply Real.injOn_cos ⟨by unfold y; bx, by unfold y; bx⟩ ⟨by positivity, by bound⟩ at iden
+  apply Real.injOn_cos_with_pi ⟨by unfold y; bx, by unfold y; bx⟩ ⟨by positivity, by bound⟩ at iden
   grind
 
 end Setup

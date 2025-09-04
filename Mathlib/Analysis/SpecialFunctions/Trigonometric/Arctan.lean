@@ -105,7 +105,7 @@ theorem image_tan_Ioo : tan '' Ioo (-(π / 2)) (π / 2) = univ :=
 
 /-- `Real.tan` as an `OrderIso` between `(-(π / 2), π / 2)` and `ℝ`. -/
 def tanOrderIso : Ioo (-(π / 2)) (π / 2) ≃o ℝ :=
-  (strictMonoOn_tan.orderIso _ _).trans <|
+  (strictMonoOn_tan_with_pi.orderIso _ _).trans <|
     (OrderIso.setCongr _ _ image_tan_Ioo).trans OrderIso.Set.univ
 
 /-- Inverse of the `tan` function, returns values in the range `-π / 2 < arctan x` and
@@ -192,7 +192,7 @@ theorem tendsto_arctan_atBot : Tendsto arctan atBot (𝓝[>] (-(π / 2))) :=
 
 theorem arctan_eq_of_tan_eq (h : tan x = y) (hx : x ∈ Ioo (-(π / 2)) (π / 2)) :
     arctan y = x :=
-  injOn_tan (arctan_mem_Ioo _) hx (by rw [tan_arctan, h])
+  injOn_tan_with_pi (arctan_mem_Ioo _) hx (by rw [tan_arctan, h])
 
 @[simp]
 theorem arctan_one : arctan 1 = π / 4 :=
@@ -326,7 +326,7 @@ theorem four_mul_arctan_inv_5_sub_arctan_inv_239 : 4 * arctan 5⁻¹ - arctan 23
 end ArctanAdd
 
 theorem sin_arctan_strictMono : StrictMono (sin <| arctan ·) := fun x y h ↦
-  strictMonoOn_sin (Ioo_subset_Icc_self <| arctan_mem_Ioo x)
+  strictMonoOn_sin_with_pi (Ioo_subset_Icc_self <| arctan_mem_Ioo x)
     (Ioo_subset_Icc_self <| arctan_mem_Ioo y) (arctan_strictMono h)
 
 @[simp]

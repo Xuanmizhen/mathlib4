@@ -305,18 +305,18 @@ theorem norm_add_eq_norm_sub_iff_angle_eq_pi_div_two (x y : V) :
 /-- The cosine of the angle between two vectors is 1 if and only if the angle is 0. -/
 theorem cos_eq_one_iff_angle_eq_zero : cos (angle x y) = 1 ↔ angle x y = 0 := by
   rw [← cos_zero]
-  exact injOn_cos.eq_iff ⟨angle_nonneg x y, angle_le_pi x y⟩ (left_mem_Icc.2 pi_pos.le)
+  exact injOn_cos_with_pi.eq_iff ⟨angle_nonneg x y, angle_le_pi x y⟩ (left_mem_Icc.2 pi_pos.le)
 
 /-- The cosine of the angle between two vectors is 0 if and only if the angle is π / 2. -/
 theorem cos_eq_zero_iff_angle_eq_pi_div_two : cos (angle x y) = 0 ↔ angle x y = π / 2 := by
   rw [← cos_pi_div_two]
-  apply injOn_cos.eq_iff ⟨angle_nonneg x y, angle_le_pi x y⟩
+  apply injOn_cos_with_pi.eq_iff ⟨angle_nonneg x y, angle_le_pi x y⟩
   constructor <;> linarith [pi_pos]
 
 /-- The cosine of the angle between two vectors is -1 if and only if the angle is π. -/
 theorem cos_eq_neg_one_iff_angle_eq_pi : cos (angle x y) = -1 ↔ angle x y = π := by
   rw [← cos_pi]
-  exact injOn_cos.eq_iff ⟨angle_nonneg x y, angle_le_pi x y⟩ (right_mem_Icc.2 pi_pos.le)
+  exact injOn_cos_with_pi.eq_iff ⟨angle_nonneg x y, angle_le_pi x y⟩ (right_mem_Icc.2 pi_pos.le)
 
 /-- The sine of the angle between two vectors is 0 if and only if the angle is 0 or π. -/
 theorem sin_eq_zero_iff_angle_eq_zero_or_angle_eq_pi :

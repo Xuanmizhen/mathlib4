@@ -28,7 +28,7 @@ variable {x y : ℝ}
 It defaults to `-π / 2` on `(-∞, -1)` and to `π / 2` to `(1, ∞)`. -/
 @[pp_nodot]
 noncomputable def arcsin : ℝ → ℝ :=
-  Subtype.val ∘ IccExtend (neg_le_self zero_le_one) sinOrderIso.symm
+  Subtype.val ∘ IccExtend (neg_le_self zero_le_one) sinOrderIso_with_pi.symm
 
 theorem arcsin_mem_Icc (x : ℝ) : arcsin x ∈ Icc (-(π / 2)) (π / 2) :=
   Subtype.coe_prop _
@@ -51,20 +51,20 @@ theorem arcsin_projIcc (x : ℝ) :
 
 theorem sin_arcsin' {x : ℝ} (hx : x ∈ Icc (-1 : ℝ) 1) : sin (arcsin x) = x := by
   simpa [arcsin, IccExtend_of_mem _ _ hx, -OrderIso.apply_symm_apply] using
-    Subtype.ext_iff.1 (sinOrderIso.apply_symm_apply ⟨x, hx⟩)
+    Subtype.ext_iff.1 (sinOrderIso_with_pi.apply_symm_apply ⟨x, hx⟩)
 
 theorem sin_arcsin {x : ℝ} (hx₁ : -1 ≤ x) (hx₂ : x ≤ 1) : sin (arcsin x) = x :=
   sin_arcsin' ⟨hx₁, hx₂⟩
 
 theorem arcsin_sin' {x : ℝ} (hx : x ∈ Icc (-(π / 2)) (π / 2)) : arcsin (sin x) = x :=
-  injOn_sin (arcsin_mem_Icc _) hx <| by rw [sin_arcsin (neg_one_le_sin _) (sin_le_one _)]
+  injOn_sin_with_pi (arcsin_mem_Icc _) hx <| by rw [sin_arcsin (neg_one_le_sin _) (sin_le_one _)]
 
 theorem arcsin_sin {x : ℝ} (hx₁ : -(π / 2) ≤ x) (hx₂ : x ≤ π / 2) : arcsin (sin x) = x :=
   arcsin_sin' ⟨hx₁, hx₂⟩
 
 theorem strictMonoOn_arcsin : StrictMonoOn arcsin (Icc (-1) 1) :=
   (Subtype.strictMono_coe _).comp_strictMonoOn <|
-    sinOrderIso.symm.strictMono.strictMonoOn_IccExtend _
+    sinOrderIso_with_pi.symm.strictMono.strictMonoOn_IccExtend _
 
 @[gcongr]
 theorem arcsin_lt_arcsin {x y : ℝ} (hx : -1 ≤ x) (hlt : x < y) (hy : y ≤ 1) :
@@ -72,7 +72,7 @@ theorem arcsin_lt_arcsin {x y : ℝ} (hx : -1 ≤ x) (hlt : x < y) (hy : y ≤ 1
   strictMonoOn_arcsin ⟨hx, hlt.le.trans hy⟩ ⟨hx.trans hlt.le, hy⟩ hlt
 
 theorem monotone_arcsin : Monotone arcsin :=
-  (Subtype.mono_coe _).comp <| sinOrderIso.symm.monotone.IccExtend _
+  (Subtype.mono_coe _).comp <| sinOrderIso_with_pi.symm.monotone.IccExtend _
 
 @[gcongr]
 theorem arcsin_le_arcsin {x y : ℝ} (h : x ≤ y) : arcsin x ≤ arcsin y := monotone_arcsin h
@@ -86,7 +86,7 @@ theorem arcsin_inj {x y : ℝ} (hx₁ : -1 ≤ x) (hx₂ : x ≤ 1) (hy₁ : -1 
 
 @[continuity, fun_prop]
 theorem continuous_arcsin : Continuous arcsin :=
-  continuous_subtype_val.comp sinOrderIso.symm.continuous.Icc_extend'
+  continuous_subtype_val.comp sinOrderIso_with_pi.symm.continuous.Icc_extend'
 
 @[fun_prop]
 theorem continuousAt_arcsin {x : ℝ} : ContinuousAt arcsin x :=
@@ -95,7 +95,7 @@ theorem continuousAt_arcsin {x : ℝ} : ContinuousAt arcsin x :=
 theorem arcsin_eq_of_sin_eq {x y : ℝ} (h₁ : sin x = y) (h₂ : x ∈ Icc (-(π / 2)) (π / 2)) :
     arcsin y = x := by
   subst y
-  exact injOn_sin (arcsin_mem_Icc _) h₂ (sin_arcsin' (sin_mem_Icc x))
+  exact injOn_sin_with_pi (arcsin_mem_Icc _) h₂ (sin_arcsin' (sin_mem_Icc x))
 
 @[simp]
 theorem arcsin_zero : arcsin 0 = 0 :=

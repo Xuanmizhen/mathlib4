@@ -304,18 +304,18 @@ theorem sin_neg (θ : Angle) : sin (-θ) = -sin θ := by
   induction θ using Real.Angle.induction_on
   exact Real.sin_neg _
 
-theorem sin_antiperiodic : Function.Antiperiodic sin (π : Angle) := by
+theorem sin_antiperiodic_with_pi : Function.Antiperiodic sin (π : Angle) := by
   intro θ
   induction θ using Real.Angle.induction_on
   exact Real.sin_antiperiodic_with_pi _
 
 @[simp]
 theorem sin_add_pi (θ : Angle) : sin (θ + π) = -sin θ :=
-  sin_antiperiodic θ
+  sin_antiperiodic_with_pi θ
 
 @[simp]
 theorem sin_sub_pi (θ : Angle) : sin (θ - π) = -sin θ :=
-  sin_antiperiodic.sub_eq θ
+  sin_antiperiodic_with_pi.sub_eq θ
 
 @[simp]
 theorem cos_zero : cos (0 : Angle) = 1 := by rw [← coe_zero, cos_coe, Real.cos_zero]
@@ -327,18 +327,18 @@ theorem cos_neg (θ : Angle) : cos (-θ) = cos θ := by
   induction θ using Real.Angle.induction_on
   exact Real.cos_neg _
 
-theorem cos_antiperiodic : Function.Antiperiodic cos (π : Angle) := by
+theorem cos_antiperiodic_with_pi : Function.Antiperiodic cos (π : Angle) := by
   intro θ
   induction θ using Real.Angle.induction_on
   exact Real.cos_antiperiodic_with_pi _
 
 @[simp]
 theorem cos_add_pi (θ : Angle) : cos (θ + π) = -cos θ :=
-  cos_antiperiodic θ
+  cos_antiperiodic_with_pi θ
 
 @[simp]
 theorem cos_sub_pi (θ : Angle) : cos (θ - π) = -cos θ :=
-  cos_antiperiodic.sub_eq θ
+  cos_antiperiodic_with_pi.sub_eq θ
 
 theorem cos_eq_zero_iff {θ : Angle} : cos θ = 0 ↔ θ = (π / 2 : ℝ) ∨ θ = (-π / 2 : ℝ) := by
   rw [← cos_pi_div_two, ← cos_coe, cos_eq_iff_eq_or_eq_neg, ← coe_neg, ← neg_div]
@@ -644,19 +644,19 @@ theorem tan_zero : tan (0 : Angle) = 0 := by rw [← coe_zero, tan_coe, Real.tan
 
 theorem tan_coe_pi : tan (π : Angle) = 0 := by rw [tan_coe, Real.tan_pi]
 
-theorem tan_periodic : Function.Periodic tan (π : Angle) := by
+theorem tan_periodic_with_pi : Function.Periodic tan (π : Angle) := by
   intro θ
   induction θ using Real.Angle.induction_on
   rw [← coe_add, tan_coe, tan_coe]
-  exact Real.tan_periodic _
+  exact Real.tan_periodic_with_pi _
 
 @[simp]
 theorem tan_add_pi (θ : Angle) : tan (θ + π) = tan θ :=
-  tan_periodic θ
+  tan_periodic_with_pi θ
 
 @[simp]
 theorem tan_sub_pi (θ : Angle) : tan (θ - π) = tan θ :=
-  tan_periodic.sub_eq θ
+  tan_periodic_with_pi.sub_eq θ
 
 @[simp]
 theorem tan_toReal (θ : Angle) : Real.tan θ.toReal = tan θ := by
@@ -682,7 +682,7 @@ theorem tan_eq_inv_of_two_nsmul_add_two_nsmul_eq_pi {θ ψ : Angle}
     mul_right_inj' (two_ne_zero' ℝ), ← eq_sub_iff_add_eq', mul_inv_cancel_left₀ two_ne_zero π,
     inv_mul_eq_div, mul_comm] at h
   rw [tan_coe, tan_coe, ← tan_pi_div_two_sub, h, add_sub_assoc, add_comm]
-  exact Real.tan_periodic.int_mul _ _
+  exact Real.tan_periodic_with_pi.int_mul _ _
 
 theorem tan_eq_inv_of_two_zsmul_add_two_zsmul_eq_pi {θ ψ : Angle}
     (h : (2 : ℤ) • θ + (2 : ℤ) • ψ = π) : tan ψ = (tan θ)⁻¹ := by
