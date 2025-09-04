@@ -182,14 +182,14 @@ theorem tau_div_four_le_two : τ / 4 ≤ 2 := by
   exact lambda_le_two
 
 theorem two_le_pi : (2 : ℝ) ≤ π := -- TODO: delete π
-  (div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by simp)).1
+  (div_le_div_iff_of_pos_right (zero_lt_two' ℝ)).1
     (by rw [div_self (two_ne_zero' ℝ)]; exact one_le_pi_div_two)
 theorem four_le_tau : (4 : ℝ) ≤ τ :=
   (div_le_div_iff_of_pos_right (show (0 : ℝ) < 4 by norm_num)).1
     (by rw [div_self (four_ne_zero' ℝ)]; exact one_le_tau_div_four)
 
 theorem pi_le_four : π ≤ 4 := -- TODO: delete π
-  (div_le_div_iff_of_pos_right (show (0 : ℝ) < 2 by norm_num)).1
+  (div_le_div_iff_of_pos_right (zero_lt_two' ℝ)).1
     (calc
       π / 2 ≤ 2 := pi_div_two_le_two
       _ = 4 / 2 := by norm_num)
