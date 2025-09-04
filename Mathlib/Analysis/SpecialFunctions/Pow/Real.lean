@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Hughes, Abhimanyu Pallavi Sudhir, Jean Lo, Calle Sönne, Sébastien Gouëzel,
   Rémy Degenne, David Loeffler
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Qq
 
@@ -1000,13 +1001,13 @@ namespace Complex
 
 lemma cpow_inv_two_re (x : ℂ) : (x ^ (2⁻¹ : ℂ)).re = √((‖x‖ + x.re) / 2) := by
   rw [← ofReal_ofNat, ← ofReal_inv, cpow_ofReal_re, ← div_eq_mul_inv, ← one_div,
-    ← Real.sqrt_eq_rpow, cos_half, ← sqrt_mul, ← mul_div_assoc, mul_add, mul_one, norm_mul_cos_arg]
+    ← Real.sqrt_eq_rpow, cos_half_with_pi, ← sqrt_mul, ← mul_div_assoc, mul_add, mul_one, norm_mul_cos_arg]
   exacts [norm_nonneg _, (neg_pi_lt_arg _).le, arg_le_pi _]
 
 lemma cpow_inv_two_im_eq_sqrt {x : ℂ} (hx : 0 ≤ x.im) :
     (x ^ (2⁻¹ : ℂ)).im = √((‖x‖ - x.re) / 2) := by
   rw [← ofReal_ofNat, ← ofReal_inv, cpow_ofReal_im, ← div_eq_mul_inv, ← one_div,
-    ← Real.sqrt_eq_rpow, sin_half_eq_sqrt, ← sqrt_mul (norm_nonneg _), ← mul_div_assoc, mul_sub,
+    ← Real.sqrt_eq_rpow, sin_half_eq_sqrt_with_pi, ← sqrt_mul (norm_nonneg _), ← mul_div_assoc, mul_sub,
     mul_one, norm_mul_cos_arg]
   · rwa [arg_nonneg_iff]
   · linarith [pi_pos, arg_le_pi x]
@@ -1014,7 +1015,7 @@ lemma cpow_inv_two_im_eq_sqrt {x : ℂ} (hx : 0 ≤ x.im) :
 lemma cpow_inv_two_im_eq_neg_sqrt {x : ℂ} (hx : x.im < 0) :
     (x ^ (2⁻¹ : ℂ)).im = -√((‖x‖ - x.re) / 2) := by
   rw [← ofReal_ofNat, ← ofReal_inv, cpow_ofReal_im, ← div_eq_mul_inv, ← one_div,
-    ← Real.sqrt_eq_rpow, sin_half_eq_neg_sqrt, mul_neg, ← sqrt_mul (norm_nonneg _),
+    ← Real.sqrt_eq_rpow, sin_half_eq_neg_sqrt_with_pi, mul_neg, ← sqrt_mul (norm_nonneg _),
     ← mul_div_assoc, mul_sub, mul_one, norm_mul_cos_arg]
   · linarith [pi_pos, neg_pi_lt_arg x]
   · exact (arg_neg_iff.2 hx).le

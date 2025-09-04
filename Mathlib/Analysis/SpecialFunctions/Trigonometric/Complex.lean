@@ -3,6 +3,7 @@ Copyright (c) 2018 Chris Hughes. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Hughes, Abhimanyu Pallavi Sudhir, Jean Lo, Calle Sönne, Benjamin Davidson
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Algebra.QuadraticDiscriminant
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 
@@ -39,7 +40,7 @@ theorem cos_eq_zero_iff {θ : ℂ} : cos θ = 0 ↔ ∃ k : ℤ, θ = (2 * k + 1
 theorem cos_ne_zero_iff {θ : ℂ} : cos θ ≠ 0 ↔ ∀ k : ℤ, θ ≠ (2 * k + 1) * π / 2 := by
   rw [← not_exists, not_iff_not, cos_eq_zero_iff]
 
-theorem sin_eq_zero_iff {θ : ℂ} : sin θ = 0 ↔ ∃ k : ℤ, θ = k * π := by
+theorem sin_eq_zero_iff_with_pi {θ : ℂ} : sin θ = 0 ↔ ∃ k : ℤ, θ = k * π := by
   rw [← Complex.cos_sub_pi_div_two, cos_eq_zero_iff]
   constructor
   · rintro ⟨k, hk⟩
@@ -51,8 +52,8 @@ theorem sin_eq_zero_iff {θ : ℂ} : sin θ = 0 ↔ ∃ k : ℤ, θ = k * π := 
     simp
     ring
 
-theorem sin_ne_zero_iff {θ : ℂ} : sin θ ≠ 0 ↔ ∀ k : ℤ, θ ≠ k * π := by
-  rw [← not_exists, not_iff_not, sin_eq_zero_iff]
+theorem sin_ne_zero_iff_with_pi {θ : ℂ} : sin θ ≠ 0 ↔ ∀ k : ℤ, θ ≠ k * π := by
+  rw [← not_exists, not_iff_not, sin_eq_zero_iff_with_pi]
 
 /-- The tangent of a complex number is equal to zero
 iff this number is equal to `k * π / 2` for an integer `k`.
@@ -61,7 +62,7 @@ Note that this lemma takes into account that we use zero as the junk value for d
 See also `Complex.tan_eq_zero_iff'`. -/
 theorem tan_eq_zero_iff {θ : ℂ} : tan θ = 0 ↔ ∃ k : ℤ, k * π / 2 = θ := by
   rw [tan, div_eq_zero_iff, ← mul_eq_zero, ← mul_right_inj' two_ne_zero, mul_zero,
-    ← mul_assoc, ← sin_two_mul, sin_eq_zero_iff]
+    ← mul_assoc, ← sin_two_mul, sin_eq_zero_iff_with_pi]
   simp [field, mul_comm, eq_comm]
 
 theorem tan_ne_zero_iff {θ : ℂ} : tan θ ≠ 0 ↔ ∀ k : ℤ, (k * π / 2 : ℂ) ≠ θ := by
@@ -75,7 +76,7 @@ then it is equal to zero iff the number is equal to `k * π` for an integer `k`.
 
 See also `Complex.tan_eq_zero_iff` for a version that takes into account junk values of `θ`. -/
 theorem tan_eq_zero_iff' {θ : ℂ} (hθ : cos θ ≠ 0) : tan θ = 0 ↔ ∃ k : ℤ, k * π = θ := by
-  simp only [tan, hθ, div_eq_zero_iff, sin_eq_zero_iff]; simp [eq_comm]
+  simp only [tan, hθ, div_eq_zero_iff, sin_eq_zero_iff_with_pi]; simp [eq_comm]
 
 theorem cos_eq_cos_iff {x y : ℂ} : cos x = cos y ↔ ∃ k : ℤ, y = 2 * k * π + x ∨ y = 2 * k * π - x :=
   calc
@@ -85,7 +86,7 @@ theorem cos_eq_cos_iff {x y : ℂ} : cos x = cos y ↔ ∃ k : ℤ, y = 2 * k * 
     _ ↔ sin ((x - y) / 2) = 0 ∨ sin ((x + y) / 2) = 0 := or_comm
     _ ↔ (∃ k : ℤ, y = 2 * k * π + x) ∨ ∃ k : ℤ, y = 2 * k * π - x := by
       apply or_congr <;>
-        simp [field, sin_eq_zero_iff, eq_sub_iff_add_eq',
+        simp [field, sin_eq_zero_iff_with_pi, eq_sub_iff_add_eq',
           sub_eq_iff_eq_add, mul_comm (2 : ℂ), mul_right_comm _ (2 : ℂ)]
       constructor <;> · rintro ⟨k, rfl⟩; use -k; simp
     _ ↔ ∃ k : ℤ, y = 2 * k * π + x ∨ y = 2 * k * π - x := exists_or.symm
@@ -95,20 +96,20 @@ theorem sin_eq_sin_iff {x y : ℂ} :
   simp only [← Complex.cos_sub_pi_div_two, cos_eq_cos_iff, sub_eq_iff_eq_add]
   refine exists_congr fun k => or_congr ?_ ?_ <;> refine Eq.congr rfl ?_ <;> simp [field] <;> ring
 
-theorem cos_eq_one_iff {x : ℂ} : cos x = 1 ↔ ∃ k : ℤ, k * (2 * π) = x := by
+theorem cos_eq_one_iff_with_pi {x : ℂ} : cos x = 1 ↔ ∃ k : ℤ, k * (2 * π) = x := by
   rw [← cos_zero, eq_comm, cos_eq_cos_iff]
   simp [mul_assoc, mul_left_comm, eq_comm]
 
 theorem cos_eq_neg_one_iff {x : ℂ} : cos x = -1 ↔ ∃ k : ℤ, π + k * (2 * π) = x := by
-  rw [← neg_eq_iff_eq_neg, ← cos_sub_pi, cos_eq_one_iff]
+  rw [← neg_eq_iff_eq_neg, ← cos_sub_pi, cos_eq_one_iff_with_pi]
   simp only [eq_sub_iff_add_eq']
 
 theorem sin_eq_one_iff {x : ℂ} : sin x = 1 ↔ ∃ k : ℤ, π / 2 + k * (2 * π) = x := by
-  rw [← cos_sub_pi_div_two, cos_eq_one_iff]
+  rw [← cos_sub_pi_div_two, cos_eq_one_iff_with_pi]
   simp only [eq_sub_iff_add_eq']
 
 theorem sin_eq_neg_one_iff {x : ℂ} : sin x = -1 ↔ ∃ k : ℤ, -(π / 2) + k * (2 * π) = x := by
-  rw [← neg_eq_iff_eq_neg, ← cos_add_pi_div_two, cos_eq_one_iff]
+  rw [← neg_eq_iff_eq_neg, ← cos_add_pi_div_two, cos_eq_one_iff_with_pi]
   simp only [← sub_eq_neg_add, sub_eq_iff_eq_add]
 
 theorem tan_add {x y : ℂ}

@@ -88,7 +88,7 @@ theorem arg_mul_cos_add_sin_mul_I {r : ℝ} (hr : 0 < r) {θ : ℝ} (hθ : θ �
     mk_eq_add_mul_I, neg_div, mul_div_cancel_left₀ _ hr.ne', mul_nonneg_iff_right_nonneg_of_pos hr]
   by_cases h₁ : θ ∈ Set.Icc (-(π / 2)) (π / 2)
   · rw [if_pos]
-    exacts [Real.arcsin_sin' h₁, Real.cos_nonneg_of_mem_Icc h₁]
+    exacts [Real.arcsin_sin' h₁, Real.cos_nonneg_of_mem_Icc_with_pi h₁]
   · rw [Set.mem_Icc, not_and_or, not_le, not_le] at h₁
     rcases h₁ with h₁ | h₁
     · replace hθ := hθ.1

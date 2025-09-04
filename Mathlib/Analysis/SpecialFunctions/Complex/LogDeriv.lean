@@ -3,6 +3,7 @@ Copyright (c) 2018 Chris Hughes. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Hughes, Abhimanyu Pallavi Sudhir, Jean Lo, Calle Sönne, Benjamin Davidson
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.Calculus.InverseFunctionTheorem.Deriv
 import Mathlib.Analysis.Calculus.LogDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
@@ -38,7 +39,7 @@ noncomputable def expPartialHomeomorph : PartialHomeomorph ℂ ℂ :=
         refine (not_or_of_imp fun hz => ?_).symm
         obtain rfl : y = 0 := by
           rw [exp_im] at hz
-          simpa [(Real.exp_pos _).ne', Real.sin_eq_zero_iff_of_lt_of_lt h₁ h₂] using hz
+          simpa [(Real.exp_pos _).ne', Real.sin_eq_zero_iff_of_lt_of_lt_with_pi h₁ h₂] using hz
         rw [← ofReal_def, exp_ofReal_re]
         exact Real.exp_pos x
       map_target' := fun z h => by

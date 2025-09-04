@@ -3,6 +3,7 @@ Copyright (c) 2020 Joseph Myers. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Joseph Myers, Manuel Candales
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Geometry.Euclidean.Angle.Oriented.Affine
 import Mathlib.Geometry.Euclidean.Angle.Unoriented.Affine
 import Mathlib.Tactic.IntervalCases
@@ -218,7 +219,7 @@ theorem angle_add_angle_sub_add_angle_sub_eq_pi (x : V) {y : V} (hy : y ≠ 0) :
   · simp [hx, hy]
   have hcos := cos_angle_add_angle_sub_add_angle_sub_eq_neg_one hx hy
   have hsin := sin_angle_add_angle_sub_add_angle_sub_eq_zero hx hy
-  rw [Real.sin_eq_zero_iff] at hsin
+  rw [Real.sin_eq_zero_iff_with_pi] at hsin
   obtain ⟨n, hn⟩ := hsin
   symm at hn
   have h0 : 0 ≤ angle x y + angle x (x - y) + angle y (y - x) :=

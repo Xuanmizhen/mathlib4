@@ -3,6 +3,7 @@ Copyright (c) 2024 Chris Birkbeck. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Birkbeck
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.Complex.UpperHalfPlane.Exp
 import Mathlib.Analysis.Complex.IntegerCompl
 import Mathlib.Analysis.Complex.LocallyUniformLimit
@@ -129,7 +130,7 @@ theorem HasProdLocallyUniformlyOn_euler_sin_prod :
   exact fun _ hZ hZC => HasProdUniformlyOn_sineTerm_prod_on_compact hZ hZC
 
 theorem sin_pi_z_ne_zero (hz : x ∈ ℂ_ℤ) : Complex.sin (π * x) ≠ 0 := by
-  apply Complex.sin_ne_zero_iff.2
+  apply Complex.sin_ne_zero_iff_with_pi.2
   intro k
   nth_rw 2 [mul_comm]
   exact Injective.ne (mul_right_injective₀ (ofReal_ne_zero.mpr Real.pi_ne_zero)) (by aesop)

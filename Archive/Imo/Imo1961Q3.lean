@@ -3,6 +3,7 @@ Copyright (c) 2024 Yury Kudryashov. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yury Kudryashov
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Complex
 
 /-!
@@ -28,7 +29,7 @@ theorem Imo1961Q3 {n : ℕ} {x : ℝ} (h₀ : n ≠ 0) :
   constructor
   · intro h
     rcases eq_or_ne (sin x) 0 with hsinx | hsinx
-    · rw [hsinx, zero_pow h₀, sub_zero, pow_eq_one_iff_of_ne_zero h₀, cos_eq_one_iff,
+    · rw [hsinx, zero_pow h₀, sub_zero, pow_eq_one_iff_of_ne_zero h₀, cos_eq_one_iff_with_pi,
         cos_eq_neg_one_iff] at h
       rcases h with ⟨k, rfl⟩ | ⟨⟨k, rfl⟩, hn⟩
       · cases n.even_or_odd with

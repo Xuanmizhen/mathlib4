@@ -3,6 +3,7 @@ Copyright (c) 2023 David Loeffler. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: David Loeffler
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.Convolution
 import Mathlib.Analysis.SpecialFunctions.Complex.LogBounds
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.EulerSineProd
@@ -405,7 +406,7 @@ theorem Gamma_mul_Gamma_one_sub (z : ℂ) : Gamma z * Gamma (1 - z) = π / sin (
   by_cases hs : sin (↑π * z) = 0
   · -- first deal with silly case z = integer
     rw [hs, div_zero]
-    rw [← neg_eq_zero, ← Complex.sin_neg, ← mul_neg, Complex.sin_eq_zero_iff, mul_comm] at hs
+    rw [← neg_eq_zero, ← Complex.sin_neg, ← mul_neg, Complex.sin_eq_zero_iff_with_pi, mul_comm] at hs
     obtain ⟨k, hk⟩ := hs
     rw [mul_eq_mul_right_iff, eq_false (ofReal_ne_zero.mpr pi_pos.ne'), or_false,
       neg_eq_iff_eq_neg] at hk
@@ -438,7 +439,7 @@ theorem Gamma_ne_zero {s : ℂ} (hs : ∀ m : ℕ, s ≠ -m) : Gamma s ≠ 0 := 
     contrapose! hs
     rwa [this, ← ofReal_natCast, ← ofReal_neg, ofReal_inj]
   · have : sin (↑π * s) ≠ 0 := by
-      rw [Complex.sin_ne_zero_iff]
+      rw [Complex.sin_ne_zero_iff_with_pi]
       intro k
       apply_fun im
       rw [im_ofReal_mul, ← ofReal_intCast, ← ofReal_mul, ofReal_im]

@@ -190,7 +190,7 @@ theorem cos_eq_iff_coe_eq_or_eq_neg {θ ψ : ℝ} :
   constructor
   · intro Hcos
     rw [← sub_eq_zero, cos_sub_cos, mul_eq_zero, mul_eq_zero, neg_eq_zero,
-      eq_false (two_ne_zero' ℝ), false_or, sin_eq_zero_iff, sin_eq_zero_iff] at Hcos
+      eq_false (two_ne_zero' ℝ), false_or, sin_eq_zero_iff_with_pi, sin_eq_zero_iff_with_pi] at Hcos
     rcases Hcos with (⟨n, hn⟩ | ⟨n, hn⟩)
     · right
       rw [eq_div_iff_mul_eq (two_ne_zero' ℝ), ← sub_eq_iff_eq_add] at hn
@@ -291,13 +291,13 @@ theorem sin_zero : sin (0 : Angle) = 0 := by rw [← coe_zero, sin_coe, Real.sin
 
 theorem sin_coe_pi : sin (π : Angle) = 0 := by rw [sin_coe, Real.sin_pi]
 
-theorem sin_eq_zero_iff {θ : Angle} : sin θ = 0 ↔ θ = 0 ∨ θ = π := by
+theorem sin_eq_zero_iff_with_pi {θ : Angle} : sin θ = 0 ↔ θ = 0 ∨ θ = π := by
   nth_rw 1 [← sin_zero]
   rw [sin_eq_iff_eq_or_add_eq_pi]
   simp
 
-theorem sin_ne_zero_iff {θ : Angle} : sin θ ≠ 0 ↔ θ ≠ 0 ∧ θ ≠ π := by
-  rw [← not_or, ← sin_eq_zero_iff]
+theorem sin_ne_zero_iff_with_pi {θ : Angle} : sin θ ≠ 0 ↔ θ ≠ 0 ∧ θ ≠ π := by
+  rw [← not_or, ← sin_eq_zero_iff_with_pi]
 
 @[simp]
 theorem sin_neg (θ : Angle) : sin (-θ) = -sin θ := by
@@ -598,7 +598,7 @@ theorem cos_toReal (θ : Angle) : Real.cos θ.toReal = cos θ := by
 theorem cos_nonneg_iff_abs_toReal_le_pi_div_two {θ : Angle} : 0 ≤ cos θ ↔ |θ.toReal| ≤ π / 2 := by
   nth_rw 1 [← coe_toReal θ]
   rw [abs_le, cos_coe]
-  refine ⟨fun h => ?_, cos_nonneg_of_mem_Icc⟩
+  refine ⟨fun h => ?_, cos_nonneg_of_mem_Icc_with_pi⟩
   by_contra hn
   rw [not_and_or, not_le, not_le] at hn
   refine (not_lt.2 h) ?_
@@ -725,7 +725,7 @@ theorem sign_pi_sub (θ : Angle) : ((π : Angle) - θ).sign = θ.sign := by
   simp [sign_antiperiodic.sub_eq']
 
 theorem sign_eq_zero_iff {θ : Angle} : θ.sign = 0 ↔ θ = 0 ∨ θ = π := by
-  rw [sign, _root_.sign_eq_zero_iff, sin_eq_zero_iff]
+  rw [sign, _root_.sign_eq_zero_iff, sin_eq_zero_iff_with_pi]
 
 theorem sign_ne_zero_iff {θ : Angle} : θ.sign ≠ 0 ↔ θ ≠ 0 ∧ θ ≠ π := by
   rw [← not_or, ← sign_eq_zero_iff]
@@ -855,7 +855,7 @@ theorem sign_two_zsmul_eq_sign_iff {θ : Angle} :
   rw [two_zsmul, ← two_nsmul, sign_two_nsmul_eq_sign_iff]
 
 theorem continuousAt_sign {θ : Angle} (h0 : θ ≠ 0) (hpi : θ ≠ π) : ContinuousAt sign θ :=
-  (continuousAt_sign_of_ne_zero (sin_ne_zero_iff.2 ⟨h0, hpi⟩)).comp continuous_sin.continuousAt
+  (continuousAt_sign_of_ne_zero (sin_ne_zero_iff_with_pi.2 ⟨h0, hpi⟩)).comp continuous_sin.continuousAt
 
 theorem _root_.ContinuousOn.angle_sign_comp {α : Type*} [TopologicalSpace α] {f : α → Angle}
     {s : Set α} (hf : ContinuousOn f s) (hs : ∀ z ∈ s, f z ≠ 0 ∧ f z ≠ π) :

@@ -3,6 +3,7 @@ Copyright (c) 2018 Chris Hughes. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chris Hughes, Abhimanyu Pallavi Sudhir, Jean Lo, Calle Sönne, Benjamin Davidson
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Order.ProjIcc
 
@@ -252,7 +253,7 @@ def sinPartialHomeomorph : PartialHomeomorph ℝ ℝ where
   continuousOn_invFun := continuous_arcsin.continuousOn
 
 theorem cos_arcsin_nonneg (x : ℝ) : 0 ≤ cos (arcsin x) :=
-  cos_nonneg_of_mem_Icc ⟨neg_pi_div_two_le_arcsin _, arcsin_le_pi_div_two _⟩
+  cos_nonneg_of_mem_Icc_with_pi ⟨neg_pi_div_two_le_arcsin _, arcsin_le_pi_div_two _⟩
 
 -- The junk values for `arcsin` and `sqrt` make this true even outside `[-1, 1]`.
 theorem cos_arcsin (x : ℝ) : cos (arcsin x) = √(1 - x ^ 2) := by

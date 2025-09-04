@@ -3,6 +3,7 @@ Copyright (c) 2022 Sébastien Gouëzel. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sébastien Gouëzel
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.MeasureTheory.Function.Jacobian
 import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
@@ -40,7 +41,7 @@ def polarCoord : PartialHomeomorph (ℝ × ℝ) (ℝ × ℝ) where
     · right
       simp at hr
       simpa only [ne_of_gt hr, Ne, mem_setOf_eq, mul_eq_zero, false_or,
-        sin_eq_zero_iff_of_lt_of_lt hθ.1 hθ.2] using h'θ
+        sin_eq_zero_iff_of_lt_of_lt_with_pi hθ.1 hθ.2] using h'θ
   map_source' := by
     rintro ⟨x, y⟩ hxy
     simp only [prodMk_mem_set_prod_eq, mem_Ioi, sqrt_pos, mem_Ioo, Complex.neg_pi_lt_arg,

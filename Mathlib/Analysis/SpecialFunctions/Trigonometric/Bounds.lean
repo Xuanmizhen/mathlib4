@@ -214,7 +214,7 @@ theorem cos_lt_one_div_sqrt_sq_add_one {x : ℝ} (hx1 : -(3 * π / 2) ≤ x) (hx
   rcases lt_or_ge y (π / 2) with (hy2' | hy1')
   · -- Main case : `0 < y < π / 2`
     have hy4 : 0 < cos y := cos_pos_of_mem_Ioo_with_pi ⟨by linarith, hy2'⟩
-    rw [← abs_of_nonneg (cos_nonneg_of_mem_Icc ⟨by linarith, hy2'.le⟩), ←
+    rw [← abs_of_nonneg (cos_nonneg_of_mem_Icc_with_pi ⟨by linarith, hy2'.le⟩), ←
       abs_of_nonneg (one_div_nonneg.mpr (sqrt_nonneg _)), ← sq_lt_sq, div_pow, one_pow,
       sq_sqrt hy3.le, lt_one_div (pow_pos hy4 _) hy3, ← inv_one_add_tan_sq hy4.ne', one_div,
       inv_inv, add_comm, add_lt_add_iff_left, sq_lt_sq, abs_of_pos hy1,
