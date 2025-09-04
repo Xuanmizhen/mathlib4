@@ -930,45 +930,75 @@ theorem sin_lt_sin_of_lt_of_le_tau_div_four {x y : ℝ} (hx₁ : -(τ / 4) ≤ x
 
 theorem strictMonoOn_sin_with_pi : StrictMonoOn sin (Icc (-(π / 2)) (π / 2)) := fun _ hx _ hy hxy =>
   sin_lt_sin_of_lt_of_le_pi_div_two hx.1 hy.2 hxy
+theorem strictMonoOn_sin : StrictMonoOn sin (Icc (-(τ / 4)) (τ / 4)) := fun _ hx _ hy hxy =>
+  sin_lt_sin_of_lt_of_le_tau_div_four hx.1 hy.2 hxy
 
 theorem monotoneOn_sin_with_pi : MonotoneOn sin (Set.Icc (-(π / 2)) (π / 2)) :=
   strictMonoOn_sin_with_pi.monotoneOn
+theorem monotoneOn_sin : MonotoneOn sin (Set.Icc (-(τ / 4)) (τ / 4)) :=
+  strictMonoOn_sin.monotoneOn
 
 theorem cos_lt_cos_of_nonneg_of_le_pi {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y ≤ π) (hxy : x < y) :
     cos y < cos x := by
   rw [← sin_pi_div_two_sub, ← sin_pi_div_two_sub]
   apply sin_lt_sin_of_lt_of_le_pi_div_two <;> linarith
+theorem cos_lt_cos_of_nonneg_of_le_tau_div_two {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y ≤ τ / 2) (hxy : x < y) :
+    cos y < cos x := by
+  rw [← sin_tau_div_four_sub, ← sin_tau_div_four_sub]
+  apply sin_lt_sin_of_lt_of_le_tau_div_four <;> linarith
 
 theorem cos_lt_cos_of_nonneg_of_le_pi_div_two {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y ≤ π / 2)
     (hxy : x < y) : cos y < cos x :=
   cos_lt_cos_of_nonneg_of_le_pi hx₁ (hy₂.trans (by linarith)) hxy
+theorem cos_lt_cos_of_nonneg_of_le_tau_div_four {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y ≤ τ / 4)
+    (hxy : x < y) : cos y < cos x :=
+  cos_lt_cos_of_nonneg_of_le_tau_div_two hx₁ (hy₂.trans (by linarith)) hxy
 
 theorem strictAntiOn_cos_with_pi : StrictAntiOn cos (Icc 0 π) := fun _ hx _ hy hxy =>
   cos_lt_cos_of_nonneg_of_le_pi hx.1 hy.2 hxy
+theorem strictAntiOn_cos : StrictAntiOn cos (Icc 0 (τ / 2)) := fun _ hx _ hy hxy =>
+  cos_lt_cos_of_nonneg_of_le_tau_div_two hx.1 hy.2 hxy
 
 theorem antitoneOn_cos_with_pi : AntitoneOn cos (Set.Icc 0 π) :=
   strictAntiOn_cos_with_pi.antitoneOn
+theorem antitoneOn_cos : AntitoneOn cos (Set.Icc 0 (τ / 2)) :=
+  strictAntiOn_cos.antitoneOn
 
 theorem cos_le_cos_of_nonneg_of_le_pi {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y ≤ π) (hxy : x ≤ y) :
     cos y ≤ cos x :=
   (strictAntiOn_cos_with_pi.le_iff_ge ⟨hx₁.trans hxy, hy₂⟩ ⟨hx₁, hxy.trans hy₂⟩).2 hxy
+theorem cos_le_cos_of_nonneg_of_le_tau_div_two {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y ≤ τ / 2)
+    (hxy : x ≤ y) : cos y ≤ cos x :=
+  (strictAntiOn_cos.le_iff_ge ⟨hx₁.trans hxy, hy₂⟩ ⟨hx₁, hxy.trans hy₂⟩).2 hxy
 
 theorem sin_le_sin_of_le_of_le_pi_div_two {x y : ℝ} (hx₁ : -(π / 2) ≤ x) (hy₂ : y ≤ π / 2)
     (hxy : x ≤ y) : sin x ≤ sin y :=
   (strictMonoOn_sin_with_pi.le_iff_le ⟨hx₁, hxy.trans hy₂⟩ ⟨hx₁.trans hxy, hy₂⟩).2 hxy
+theorem sin_le_sin_of_le_of_le_tau_div_four {x y : ℝ} (hx₁ : -(τ / 4) ≤ x) (hy₂ : y ≤ τ / 4)
+    (hxy : x ≤ y) : sin x ≤ sin y :=
+  (strictMonoOn_sin.le_iff_le ⟨hx₁, hxy.trans hy₂⟩ ⟨hx₁.trans hxy, hy₂⟩).2 hxy
 
 theorem injOn_sin_with_pi : InjOn sin (Icc (-(π / 2)) (π / 2)) :=
   strictMonoOn_sin_with_pi.injOn
+theorem injOn_sin : InjOn sin (Icc (-(τ / 4)) (τ / 4)) :=
+  strictMonoOn_sin.injOn
 
 theorem injOn_cos_with_pi : InjOn cos (Icc 0 π) :=
   strictAntiOn_cos_with_pi.injOn
+theorem injOn_cos : InjOn cos (Icc 0 (τ / 2)) :=
+  strictAntiOn_cos.injOn
 
 theorem surjOn_sin_with_pi : SurjOn sin (Icc (-(π / 2)) (π / 2)) (Icc (-1) 1) := by
   simpa only [sin_neg, sin_pi_div_two] using
     intermediate_value_Icc (neg_le_self pi_div_two_pos.le) continuous_sin.continuousOn
+theorem surjOn_sin : SurjOn sin (Icc (-(τ / 4)) ((τ / 4))) (Icc (-1) 1) := by
+  simpa only [sin_neg, sin_tau_div_four] using
+    intermediate_value_Icc (neg_le_self tau_div_four_pos.le) continuous_sin.continuousOn
 
 theorem surjOn_cos_with_pi : SurjOn cos (Icc 0 π) (Icc (-1) 1) := by
   simpa only [cos_zero, cos_pi] using intermediate_value_Icc' pi_pos.le continuous_cos.continuousOn
+theorem surjOn_cos : SurjOn cos (Icc 0 (τ / 2)) (Icc (-1) 1) := by
+  simpa only [cos_zero, cos_tau_div_two] using intermediate_value_Icc' tau_div_two_pos.le continuous_cos.continuousOn
 
 theorem sin_mem_Icc (x : ℝ) : sin x ∈ Icc (-1 : ℝ) 1 :=
   ⟨neg_one_le_sin x, sin_le_one x⟩
@@ -982,9 +1012,13 @@ theorem mapsTo_cos (s : Set ℝ) : MapsTo cos s (Icc (-1 : ℝ) 1) := fun x _ =>
 
 theorem bijOn_sin_with_pi : BijOn sin (Icc (-(π / 2)) (π / 2)) (Icc (-1) 1) :=
   ⟨mapsTo_sin _, injOn_sin_with_pi, surjOn_sin_with_pi⟩
+theorem bijOn_sin : BijOn sin (Icc (-(τ / 4)) (τ / 4)) (Icc (-1) 1) :=
+  ⟨mapsTo_sin _, injOn_sin, surjOn_sin⟩
 
 theorem bijOn_cos_with_pi : BijOn cos (Icc 0 π) (Icc (-1) 1) :=
   ⟨mapsTo_cos _, injOn_cos_with_pi, surjOn_cos_with_pi⟩
+theorem bijOn_cos : BijOn cos (Icc 0 (τ / 2)) (Icc (-1) 1) :=
+  ⟨mapsTo_cos _, injOn_cos, surjOn_cos⟩
 
 @[simp]
 theorem range_cos : range cos = (Icc (-1) 1 : Set ℝ) :=
@@ -1059,14 +1093,37 @@ theorem cos_pi_over_two_pow : ∀ n : ℕ, cos (π / 2 ^ (n + 1)) = sqrtTwoAddSe
     rw [pow_succ, div_mul_eq_div_div, cos_half_with_pi, cos_pi_over_two_pow n, sqrtTwoAddSeries,
       add_div_eq_mul_add_div, one_mul, ← div_mul_eq_div_div, sqrt_div, sqrt_mul_self] <;>
       linarith [sqrtTwoAddSeries_nonneg le_rfl n]
+@[simp]
+theorem cos_tau_over_two_pow : ∀ n : ℕ, cos (τ / 2 ^ (n + 2)) = sqrtTwoAddSeries 0 n / 2
+  | 0 => by norm_num
+  | n + 1 => by
+    have A : (2 : ℝ) < 2 ^ (n + 2) := calc (2 : ℝ)
+      _ < 1 * 4 := by norm_num
+      _ ≤ 2 ^ n * 4 := (mul_le_mul_iff_left₀ (zero_lt_four' ℝ)).2 (one_le_pow₀ one_le_two)
+      _ = 2 ^ (n + 2) := by rw [pow_add]; norm_num
+    have B : τ / 2 ^ (n + 2) < τ / 2 := div_lt_div_of_pos_left tau_pos zero_lt_two A
+    have C : 0 < τ / 2 ^ (n + 2) := by positivity
+    rw [pow_succ, div_mul_eq_div_div, cos_half, cos_tau_over_two_pow n, sqrtTwoAddSeries,
+      add_div_eq_mul_add_div, one_mul, ← div_mul_eq_div_div, sqrt_div, sqrt_mul_self] <;>
+      linarith [sqrtTwoAddSeries_nonneg le_rfl n]
 
 theorem sin_sq_pi_over_two_pow (n : ℕ) :
     sin (π / 2 ^ (n + 1)) ^ 2 = 1 - (sqrtTwoAddSeries 0 n / 2) ^ 2 := by
   rw [sin_sq, cos_pi_over_two_pow]
+theorem sin_sq_tau_over_two_pow (n : ℕ) :
+    sin (τ / 2 ^ (n + 2)) ^ 2 = 1 - (sqrtTwoAddSeries 0 n / 2) ^ 2 := by
+  rw [sin_sq, cos_tau_over_two_pow]
 
 theorem sin_sq_pi_over_two_pow_succ (n : ℕ) :
     sin (π / 2 ^ (n + 2)) ^ 2 = 1 / 2 - sqrtTwoAddSeries 0 n / 4 := by
   rw [sin_sq_pi_over_two_pow, sqrtTwoAddSeries, div_pow, sq_sqrt, add_div, ← sub_sub]
+  · congr
+    · norm_num
+    · norm_num
+  · exact add_nonneg two_pos.le (sqrtTwoAddSeries_zero_nonneg _)
+theorem sin_sq_tau_over_two_pow_succ (n : ℕ) :
+    sin (τ / 2 ^ (n + 3)) ^ 2 = 1 / 2 - sqrtTwoAddSeries 0 n / 4 := by
+  rw [sin_sq_tau_over_two_pow, sqrtTwoAddSeries, div_pow, sq_sqrt, add_div, ← sub_sub]
   · congr
     · norm_num
     · norm_num
@@ -1083,10 +1140,29 @@ theorem sin_pi_over_two_pow_succ (n : ℕ) :
   refine mul_nonneg (sin_nonneg_of_nonneg_of_le_pi ?_ ?_) zero_le_two
   · positivity
   · exact div_le_self pi_pos.le <| one_le_pow₀ one_le_two
+@[simp]
+theorem sin_tau_over_two_pow_succ (n : ℕ) :
+    sin (τ / 2 ^ (n + 3)) = √(2 - sqrtTwoAddSeries 0 n) / 2 := by
+  rw [eq_div_iff_mul_eq two_ne_zero, eq_comm, sqrt_eq_iff_eq_sq, mul_pow,
+    sin_sq_tau_over_two_pow_succ, sub_mul]
+  · congr <;> norm_num
+  · rw [sub_nonneg]
+    exact (sqrtTwoAddSeries_lt_two _).le
+  refine mul_nonneg (sin_nonneg_of_nonneg_of_le_tau_div_two ?_ ?_) zero_le_two
+  · positivity
+  · exact sorry
+
+end CosDivSq
 
 @[simp]
 theorem cos_pi_div_four : cos (π / 4) = √2 / 2 := by
   trans cos (π / 2 ^ 2)
+  · congr
+    norm_num
+  · simp
+@[simp]
+theorem cos_tau_div_eight : cos (τ / 8) = √2 / 2 := by
+  trans cos (τ / 2 ^ 3)
   · congr
     norm_num
   · simp
@@ -1097,10 +1173,22 @@ theorem sin_pi_div_four : sin (π / 4) = √2 / 2 := by
   · congr
     norm_num
   · simp
+@[simp]
+theorem sin_tau_div_eight : sin (τ / 8) = √2 / 2 := by
+  trans sin (τ / 2 ^ 3)
+  · congr
+    norm_num
+  · simp
 
 @[simp]
 theorem cos_pi_div_eight : cos (π / 8) = √(2 + √2) / 2 := by
   trans cos (π / 2 ^ 3)
+  · congr
+    norm_num
+  · simp
+@[simp]
+theorem cos_tau_div_sixteen : cos (τ / 16) = √(2 + √2) / 2 := by
+  trans cos (τ / 2 ^ 4)
   · congr
     norm_num
   · simp
@@ -1111,10 +1199,22 @@ theorem sin_pi_div_eight : sin (π / 8) = √(2 - √2) / 2 := by
   · congr
     norm_num
   · simp
+@[simp]
+theorem sin_tau_div_sixteen : sin (τ / 16) =  √(2 - √2) / 2 := by
+  trans sin (τ / 2 ^ 4)
+  · congr
+    norm_num
+  · simp
 
 @[simp]
 theorem cos_pi_div_sixteen : cos (π / 16) = √(2 + √(2 + √2)) / 2 := by
   trans cos (π / 2 ^ 4)
+  · congr
+    norm_num
+  · simp
+@[simp]
+theorem cos_tau_div_thirty_two : cos (τ / 32) = √(2 + √(2 + √2)) / 2 := by
+  trans cos (τ / 2 ^ 5)
   · congr
     norm_num
   · simp
@@ -1125,10 +1225,22 @@ theorem sin_pi_div_sixteen : sin (π / 16) = √(2 - √(2 + √2)) / 2 := by
   · congr
     norm_num
   · simp
+@[simp]
+theorem sin_tau_div_thirty_two : sin (τ / 32) = √(2 - √(2 + √2)) / 2 := by
+  trans sin (τ / 2 ^ 5)
+  · congr
+    norm_num
+  · simp
 
 @[simp]
 theorem cos_pi_div_thirty_two : cos (π / 32) = √(2 + √(2 + √(2 + √2))) / 2 := by
   trans cos (π / 2 ^ 5)
+  · congr
+    norm_num
+  · simp
+@[simp]
+theorem cos_tau_div_sixty_four : cos (τ / 64) = √(2 + √(2 + √(2 + √2))) / 2 := by
+  trans cos (τ / 2 ^ 6)
   · congr
     norm_num
   · simp
@@ -1139,8 +1251,23 @@ theorem sin_pi_div_thirty_two : sin (π / 32) = √(2 - √(2 + √(2 + √2))) 
   · congr
     norm_num
   · simp
+@[simp]
+theorem sin_tau_div_sixty_four : sin (τ / 64) = √(2 - √(2 + √(2 + √2))) / 2 := by
+  trans sin (τ / 2 ^ 6)
+  · congr
+    norm_num
+  · simp
 
 -- This section is also a convenient location for other explicit values of `sin` and `cos`.
+/-- The cosine of `τ / 3` is `-(1 / 2)`. -/
+@[simp]
+theorem cos_tau_div_three : cos (τ / 3) = -(1 / 2) := by
+  sorry -- TODO: where to put?
+/-- The sine of `τ / 3` is `√3 / 2`. -/
+@[simp]
+theorem sin_tau_div_three : sin (τ / 3) = √3 / 2 := by
+  sorry -- TODO: where to put?
+
 /-- The cosine of `π / 3` is `1 / 2`. -/
 @[simp]
 theorem cos_pi_div_three : cos (π / 3) = 1 / 2 := by
@@ -1154,12 +1281,30 @@ theorem cos_pi_div_three : cos (π / 3) = 1 / 2 := by
   · have : cos π < cos (π / 3) := by
       refine cos_lt_cos_of_nonneg_of_le_pi ?_ le_rfl ?_ <;> linarith [pi_pos]
     linarith [cos_pi]
+/-- The cosine of `τ / 6` is `1 / 2`. -/
+@[simp]
+theorem cos_tau_div_six : cos (τ / 6) = 1 / 2 := by
+  have h₁ : (2 * cos (τ / 6) - 1) ^ 2 * (2 * cos (τ / 6) + 2) = 0 := by
+    have : cos (3 * (τ / 6)) = cos (τ / 2) := by
+      congr 1
+      ring
+    linarith [cos_tau_div_two, cos_three_mul (τ / 6)]
+  rcases mul_eq_zero.mp h₁ with h | h
+  · linarith [pow_eq_zero h]
+  · have : cos (τ / 2) < cos (τ / 6) := by
+      refine cos_lt_cos_of_nonneg_of_le_tau_div_two ?_ le_rfl ?_ <;> linarith [tau_div_two_pos]
+    linarith [cos_tau_div_two]
 
 /-- The cosine of `π / 6` is `√3 / 2`. -/
 @[simp]
 theorem cos_pi_div_six : cos (π / 6) = √3 / 2 := by
   rw [show (6 : ℝ) = 3 * 2 by norm_num, div_mul_eq_div_div, cos_half_with_pi, cos_pi_div_three, one_add_div,
     ← div_mul_eq_div_div, two_add_one_eq_three, sqrt_div, sqrt_mul_self] <;> linarith [pi_pos]
+/-- The cosine of `τ / 12` is `√3 / 2`. -/
+@[simp]
+theorem cos_tau_div_twelve : cos (τ / 12) = √3 / 2 := by
+  rw [show (12 : ℝ) = 6 * 2 by norm_num, div_mul_eq_div_div, cos_half, cos_tau_div_six, one_add_div,
+    ← div_mul_eq_div_div, two_add_one_eq_three, sqrt_div, sqrt_mul_self] <;> linarith [tau_pos]
 
 /-- The square of the cosine of `π / 6` is `3 / 4` (this is sometimes more convenient than the
 result for cosine itself). -/
@@ -1229,8 +1374,6 @@ theorem cos_pi_div_five : cos (π / 5) = (1 + √5) / 4 := by
   · absurd (show 0 ≤ c from cos_nonneg_of_mem_Icc_with_pi <| by constructor <;> linarith [pi_pos.le])
     rw [not_le, h]
     exact div_neg_of_neg_of_pos (by norm_num [lt_sqrt]) (by positivity)
-
-end CosDivSq
 
 /-- `Real.sin` as an `OrderIso` between `[-(π / 2), π / 2]` and `[-1, 1]`. -/
 def sinOrderIso_with_pi : Icc (-(π / 2)) (π / 2) ≃o Icc (-1 : ℝ) 1 :=
