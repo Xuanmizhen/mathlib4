@@ -146,7 +146,7 @@ scoped notation "τ" => Real.tau
 
 @[simp]
 theorem lambda_eq_tau_div_four : λ = τ / 4 := by
-  rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
+  rw [Real.tau, mul_div_cancel_left₀ _ four_ne_zero]
 
 lemma two_lambda_eq_tau_div_two : 2 * λ = τ / 2 := by
   rw [Real.tau, mul_div_right_comm]
@@ -156,7 +156,7 @@ lemma cos_lambda : cos λ = 0 := by
   exact (Classical.choose_spec exists_cos_eq_zero).2
 @[simp]
 theorem cos_pi_div_two : cos (π / 2) = 0 := by -- TODO: delete π
-  rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
+  rw [Real.pi, mul_div_cancel_left₀ _ two_ne_zero]
   exact (Classical.choose_spec exists_cos_eq_zero).2
 @[simp]
 theorem cos_tau_div_four : cos (τ / 4) = 0 := by
@@ -166,7 +166,7 @@ theorem cos_tau_div_four : cos (τ / 4) = 0 := by
 lemma one_le_lambda : (1 : ℝ) ≤ λ := by
   exact (Classical.choose_spec exists_cos_eq_zero).1.1
 theorem one_le_pi_div_two : (1 : ℝ) ≤ π / 2 := by -- TODO: delete π
-  rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
+  rw [Real.pi, mul_div_cancel_left₀ _ two_ne_zero]
   exact (Classical.choose_spec exists_cos_eq_zero).1.1
 theorem one_le_tau_div_four : (1 : ℝ) ≤ τ / 4 := by
   rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
@@ -175,21 +175,21 @@ theorem one_le_tau_div_four : (1 : ℝ) ≤ τ / 4 := by
 lemma lambda_le_two : λ ≤ 2 := by
   exact (Classical.choose_spec exists_cos_eq_zero).1.2
 theorem pi_div_two_le_two : π / 2 ≤ 2 := by -- TODO: delete π
-  rw [Real.pi, mul_div_cancel_left₀ _ (two_ne_zero' ℝ)]
-  exact lambda_le_two
+  rw [Real.pi, mul_div_cancel_left₀ _ two_ne_zero]
+  exact (Classical.choose_spec exists_cos_eq_zero).1.2
 theorem tau_div_four_le_two : τ / 4 ≤ 2 := by
-  rw [Real.tau, mul_div_cancel_left₀ _ (four_ne_zero' ℝ)]
+  rw [Real.tau, mul_div_cancel_left₀ _ four_ne_zero]
   exact lambda_le_two
 
 theorem two_le_pi : (2 : ℝ) ≤ π := -- TODO: delete π
-  (div_le_div_iff_of_pos_right (zero_lt_two' ℝ)).1
-    (by rw [div_self (two_ne_zero' ℝ)]; exact one_le_pi_div_two)
+  (div_le_div_iff_of_pos_right zero_lt_two).1
+    (by rw [div_self two_ne_zero]; exact one_le_pi_div_two)
 theorem four_le_tau : (4 : ℝ) ≤ τ :=
   (div_le_div_iff_of_pos_right (show (0 : ℝ) < 4 by norm_num)).1
     (by rw [div_self (four_ne_zero' ℝ)]; exact one_le_tau_div_four)
 
 theorem pi_le_four : π ≤ 4 := -- TODO: delete π
-  (div_le_div_iff_of_pos_right (zero_lt_two' ℝ)).1
+  (div_le_div_iff_of_pos_right zero_lt_two).1
     (calc
       π / 2 ≤ 2 := pi_div_two_le_two
       _ = 4 / 2 := by norm_num)
@@ -324,7 +324,7 @@ lemma sin_two_lambda : sin (2 * λ) = 0 := by
   simp
 @[simp]
 theorem sin_pi : sin π = 0 := by
-  rw [← mul_div_cancel_left₀ π (two_ne_zero' ℝ), two_mul, add_div, sin_add, cos_pi_div_two]; simp
+  rw [← mul_div_cancel_left₀ π two_ne_zero, two_mul, add_div, sin_add, cos_pi_div_two]; simp
 @[simp]
 theorem sin_tau_div_two : sin (τ / 2) = 0 := by
   rw [← two_lambda_eq_tau_div_two]
@@ -335,7 +335,7 @@ lemma cos_two_lambda : cos (2 * λ) = -1 := by
   norm_num
 @[simp]
 theorem cos_pi : cos π = -1 := by
-  rw [← mul_div_cancel_left₀ π (two_ne_zero' ℝ), mul_div_assoc, cos_two_mul, cos_pi_div_two]
+  rw [← mul_div_cancel_left₀ π two_ne_zero, mul_div_assoc, cos_two_mul, cos_pi_div_two]
   norm_num
 @[simp]
 theorem cos_tau_div_two : cos (τ / 2) = -1 := by
