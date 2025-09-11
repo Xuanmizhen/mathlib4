@@ -1310,11 +1310,21 @@ theorem cos_tau_div_twelve : cos (τ / 12) = √3 / 2 := by
 result for cosine itself). -/
 theorem sq_cos_pi_div_six : cos (π / 6) ^ 2 = 3 / 4 := by
   rw [cos_pi_div_six, div_pow, sq_sqrt] <;> norm_num
+/-- The square of the cosine of `τ / 12` is `3 / 4` (this is sometimes more convenient than the
+result for cosine itself). -/
+theorem sq_cos_tau_div_twelve : cos (τ / 12) ^ 2 = 3 / 4 := by
+  rw [cos_tau_div_twelve, div_pow, sq_sqrt] <;> norm_num
 
 /-- The sine of `π / 6` is `1 / 2`. -/
 @[simp]
 theorem sin_pi_div_six : sin (π / 6) = 1 / 2 := by
   rw [← cos_pi_div_two_sub, ← cos_pi_div_three]
+  congr
+  ring
+/-- The sine of `τ / 12` is `1 / 2`. -/
+@[simp]
+theorem sin_tau_div_twelve : sin (τ / 12) = 1 / 2 := by
+  rw [← cos_tau_div_four_sub, ← cos_tau_div_six]
   congr
   ring
 
@@ -1324,11 +1334,23 @@ theorem sq_sin_pi_div_three : sin (π / 3) ^ 2 = 3 / 4 := by
   rw [← cos_pi_div_two_sub, ← sq_cos_pi_div_six]
   congr
   ring
+/-- The square of the sine of `τ / 6` is `3 / 4` (this is sometimes more convenient than the
+result for cosine itself). -/
+theorem sq_sin_tau_div_six : sin (τ / 6) ^ 2 = 3 / 4 := by
+  rw [← cos_tau_div_four_sub, ← sq_cos_tau_div_twelve]
+  congr
+  ring
 
 /-- The sine of `π / 3` is `√3 / 2`. -/
 @[simp]
 theorem sin_pi_div_three : sin (π / 3) = √3 / 2 := by
   rw [← cos_pi_div_two_sub, ← cos_pi_div_six]
+  congr
+  ring
+/-- The sine of `τ / 6` is `√3 / 2`. -/
+@[simp]
+theorem sin_tau_div_six : sin (τ / 6) = √3 / 2 := by
+  rw [← cos_tau_div_four_sub, ← cos_tau_div_twelve]
   congr
   ring
 
@@ -1355,6 +1377,28 @@ theorem quadratic_root_cos_pi_div_five :
                  _ = 2 * s * c * c + (2 * c ^ 2 - 1) * s := by rw [cos_two_mul]
                  _ = s * (2 * c * c) + s * (2 * c ^ 2 - 1) := by linarith
                  _ = s * (4 * c ^ 2 - 1) := by linarith
+theorem quadratic_root_cos_tau_div_ten :
+    letI c := cos (τ / 10)
+    4 * c ^ 2 - 2 * c - 1 = 0 := by
+  set θ := τ / 10 with hθ
+  set c := cos θ
+  set s := sin θ
+  suffices 2 * c = 4 * c ^ 2 - 1 by simp [this]
+  have hs : s ≠ 0 := by
+    rw [ne_eq, sin_eq_zero_iff, hθ]
+    push_neg
+    intro n hn
+    sorry
+  suffices s * (2 * c) = s * (4 * c ^ 2 - 1) from mul_left_cancel₀ hs this
+  calc s * (2 * c) = 2 * s * c := by rw [← mul_assoc, mul_comm 2]
+                 _ = sin (2 * θ) := by rw [sin_two_mul]
+                 _ = sin (π - 2 * θ) := by rw [sin_pi_sub]
+                 _ = sin (2 * θ + θ) := by congr; simp [hθ]; sorry
+                 _ = sin (2 * θ) * c + cos (2 * θ) * s := sin_add (2 * θ) θ
+                 _ = 2 * s * c * c + cos (2 * θ) * s := by rw [sin_two_mul]
+                 _ = 2 * s * c * c + (2 * c ^ 2 - 1) * s := by rw [cos_two_mul]
+                 _ = s * (2 * c * c) + s * (2 * c ^ 2 - 1) := by linarith
+                 _ = s * (4 * c ^ 2 - 1) := by linarith
 
 open Polynomial in
 theorem Polynomial.isRoot_cos_pi_div_five :
@@ -1372,6 +1416,19 @@ theorem cos_pi_div_five : cos (π / 5) = (1 + √5) / 4 := by
   rcases (quadratic_eq_zero_iff (by norm_num) hd c).mp this with h | h
   · simp [h]; linarith
   · absurd (show 0 ≤ c from cos_nonneg_of_mem_Icc_with_pi <| by constructor <;> linarith [pi_pos.le])
+    rw [not_le, h]
+    exact div_neg_of_neg_of_pos (by norm_num [lt_sqrt]) (by positivity)
+/-- The cosine of `τ / 10` is `(1 + √5) / 4`. -/
+@[simp]
+theorem cos_tau_div_ten : cos (τ / 10) = (1 + √5) / 4 := by
+  set c := cos (τ / 10)
+  have : 4 * (c * c) + (-2) * c + (-1) = 0 := by
+    rw [← sq, neg_mul, ← sub_eq_add_neg, ← sub_eq_add_neg]
+    exact quadratic_root_cos_tau_div_ten
+  have hd : discrim 4 (-2) (-1) = (2 * √5) * (2 * √5) := by norm_num [discrim, mul_mul_mul_comm]
+  rcases (quadratic_eq_zero_iff (by norm_num) hd c).mp this with h | h
+  · simp [h]; linarith
+  · absurd (show 0 ≤ c from cos_nonneg_of_mem_Icc <| by constructor <;> sorry)
     rw [not_le, h]
     exact div_neg_of_neg_of_pos (by norm_num [lt_sqrt]) (by positivity)
 
@@ -1394,10 +1451,16 @@ theorem tan_pi_div_four : tan (π / 4) = 1 := by
 
 @[simp]
 theorem tan_pi_div_two : tan (π / 2) = 0 := by simp [tan_eq_sin_div_cos]
+@[simp]
+theorem tan_tau_div_four : tan (τ / 4) = 0 := by simp [tan_eq_sin_div_cos]
 
 @[simp]
 theorem tan_pi_div_six : tan (π / 6) = 1 / √3 := by
   rw [tan_eq_sin_div_cos, sin_pi_div_six, cos_pi_div_six]
+  ring
+@[simp]
+theorem tan_tau_div_twelve : tan (τ / 12) = 1 / √3 := by
+  rw [tan_eq_sin_div_cos, sin_tau_div_twelve, cos_tau_div_twelve]
   ring
 
 @[simp]
