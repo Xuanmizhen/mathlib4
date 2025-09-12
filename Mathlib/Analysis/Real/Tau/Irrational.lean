@@ -3,7 +3,7 @@ Copyright (c) 2022 Bhavik Mehta. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta
 -/
--- MODIFIED by Xuanmizhen: Support `τ` as the circle constant
+-- MODIFIED by Xuanmizhen: Make it a τ version
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Topology.Algebra.Order.Floor

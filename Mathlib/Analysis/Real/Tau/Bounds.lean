@@ -1,8 +1,9 @@
 /-
-TODO: deal with copyright
-This is an incomplete rewrite of ../Pi/Bounds.lean
-You can see that file for the original copyright information.
+Copyright (c) 2019 Floris van Doorn. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Floris van Doorn, Mario Carneiro
 -/
+-- MODIFIED by Xuanmizhen: Make it a τ version
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 
 /-!

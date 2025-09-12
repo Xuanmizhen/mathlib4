@@ -1490,27 +1490,47 @@ theorem strictMonoOn_tan_with_pi : StrictMonoOn tan (Ioo (-(π / 2)) (π / 2)) :
   rw [tan_eq_sin_div_cos, tan_eq_sin_div_cos,
     div_lt_div_iff₀ (cos_pos_of_mem_Ioo_with_pi hx) (cos_pos_of_mem_Ioo_with_pi hy), mul_comm, ← sub_pos, ← sin_sub]
   exact sin_pos_of_pos_of_lt_pi (sub_pos.2 hlt) <| by linarith [hx.1, hy.2]
+theorem strictMonoOn_tan : StrictMonoOn tan (Ioo (-(τ / 4)) (τ / 4)) := by
+  rintro x hx y hy hlt
+  rw [tan_eq_sin_div_cos, tan_eq_sin_div_cos,
+    div_lt_div_iff₀ (cos_pos_of_mem_Ioo hx) (cos_pos_of_mem_Ioo hy), mul_comm, ← sub_pos, ← sin_sub]
+  exact sin_pos_of_pos_of_lt_tau_div_two (sub_pos.2 hlt) <| by linarith [hx.1, hy.2]
 
 theorem tan_lt_tan_of_lt_of_lt_pi_div_two {x y : ℝ} (hx₁ : -(π / 2) < x) (hy₂ : y < π / 2)
     (hxy : x < y) : tan x < tan y :=
   strictMonoOn_tan_with_pi ⟨hx₁, hxy.trans hy₂⟩ ⟨hx₁.trans hxy, hy₂⟩ hxy
+theorem tan_lt_tan_of_lt_of_lt_tau_div_four {x y : ℝ} (hx₁ : -(τ / 4) < x) (hy₂ : y < τ / 4)
+    (hxy : x < y) : tan x < tan y :=
+  strictMonoOn_tan ⟨hx₁, hxy.trans hy₂⟩ ⟨hx₁.trans hxy, hy₂⟩ hxy
 
 theorem tan_lt_tan_of_nonneg_of_lt_pi_div_two {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y < π / 2)
     (hxy : x < y) : tan x < tan y :=
   tan_lt_tan_of_lt_of_lt_pi_div_two (by linarith) hy₂ hxy
+theorem tan_lt_tan_of_nonneg_of_lt_tau_div_four {x y : ℝ} (hx₁ : 0 ≤ x) (hy₂ : y < τ / 4)
+    (hxy : x < y) : tan x < tan y :=
+  tan_lt_tan_of_lt_of_lt_tau_div_four (by linarith) hy₂ hxy
 
 theorem injOn_tan_with_pi : InjOn tan (Ioo (-(π / 2)) (π / 2)) :=
   strictMonoOn_tan_with_pi.injOn
+theorem injOn_tan : InjOn tan (Ioo (-(τ / 4)) (τ / 4)) :=
+  strictMonoOn_tan.injOn
 
 theorem tan_inj_of_lt_of_lt_pi_div_two {x y : ℝ} (hx₁ : -(π / 2) < x) (hx₂ : x < π / 2)
     (hy₁ : -(π / 2) < y) (hy₂ : y < π / 2) (hxy : tan x = tan y) : x = y :=
   injOn_tan_with_pi ⟨hx₁, hx₂⟩ ⟨hy₁, hy₂⟩ hxy
+theorem tan_inj_of_lt_of_lt_tau_div_four {x y : ℝ} (hx₁ : -(τ / 4) < x) (hx₂ : x < τ / 4)
+    (hy₁ : -(τ / 4) < y) (hy₂ : y < τ / 4) (hxy : tan x = tan y) : x = y :=
+  injOn_tan ⟨hx₁, hx₂⟩ ⟨hy₁, hy₂⟩ hxy
 
 theorem tan_periodic_with_pi : Function.Periodic tan π := by
   simpa only [Function.Periodic, tan_eq_sin_div_cos] using sin_antiperiodic_with_pi.div cos_antiperiodic_with_pi
+theorem tan_periodic : Function.Periodic tan (τ / 2) := by
+  simpa only [Function.Periodic, tan_eq_sin_div_cos] using sin_antiperiodic.div cos_antiperiodic
 
 @[simp]
 theorem tan_pi : tan π = 0 := by rw [tan_periodic_with_pi.eq, tan_zero]
+@[simp]
+theorem tan_tau_div_two : tan (τ / 2) = 0 := by rw [tan_periodic.eq, tan_zero]
 
 theorem tan_add_pi (x : ℝ) : tan (x + π) = tan x :=
   tan_periodic_with_pi x
