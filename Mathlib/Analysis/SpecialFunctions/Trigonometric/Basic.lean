@@ -124,8 +124,9 @@ protected noncomputable def lambda : ℝ := -- TODO: provide more details from t
 @[inherit_doc]
 local notation "λ" => Real.lambda
 
-/-- The number π = 3.14159265... Defined here using choice as twice a zero of cos in [1,2], from
-which one can derive all its properties. For explicit bounds on π, see `Data.Real.Pi.Bounds`.
+/-- The number π = 3.14159265... Defined here using choice as twice a zero of cos in [1,2],
+from which one can derive all its properties. For explicit bounds on π,
+see `Mathlib/Analysis/Real/Pi/Bounds.lean`.
 
 Denoted `π`, once the `Real` namespace is opened. -/
 protected noncomputable def pi : ℝ :=
@@ -209,7 +210,7 @@ theorem lambda_pos : 0 < λ :=
   lt_of_lt_of_le (by norm_num) one_le_lambda
 @[bound]
 theorem pi_pos : 0 < π := -- TODO: delete π
-  lt_of_lt_of_le (by norm_num) two_le_pi
+  lt_of_lt_of_le (by simp) two_le_pi
 @[bound]
 theorem tau_pos : 0 < τ :=
   lt_of_lt_of_le (by norm_num) four_le_tau
@@ -723,7 +724,7 @@ theorem sin_pi_div_two : sin (π / 2) = 1 :=
   have : sin (π / 2) = 1 ∨ sin (π / 2) = -1 := by
     simpa [sq, mul_self_eq_one_iff] using sin_sq_add_cos_sq (π / 2)
   this.resolve_right fun h =>
-    show ¬(0 : ℝ) < -1 by norm_num <|
+    show ¬(0 : ℝ) < -1 by simp <|
       h ▸ sin_pos_of_pos_of_lt_pi pi_div_two_pos (half_lt_self pi_pos)
 @[simp]
 theorem sin_tau_div_four : sin (τ / 4) = 1 := by
@@ -876,8 +877,8 @@ theorem cos_eq_one_iff_with_pi (x : ℝ) : cos x = 1 ↔ ∃ n : ℤ, (n : ℝ) 
           rwa [← mul_assoc, ← @Int.cast_two ℝ, ← Int.cast_mul,
             Int.ediv_mul_cancel (Int.dvd_iff_emod_eq_zero.2 hn0)])
         fun hn1 => by
-        rw [← Int.emod_add_ediv n 2, hn1, Int.cast_add, Int.cast_one, add_mul, one_mul, add_comm,
-              mul_comm (2 : ℤ), Int.cast_mul, mul_assoc, Int.cast_two] at hn
+        rw [← Int.emod_add_mul_ediv n 2, hn1, Int.cast_add, Int.cast_one, add_mul, one_mul,
+          add_comm, mul_comm (2 : ℤ), Int.cast_mul, mul_assoc, Int.cast_two] at hn
         rw [← hn, cos_int_mul_two_pi_add_pi] at h
         exact absurd h (by norm_num)⟩,
     fun ⟨_, hn⟩ => hn ▸ cos_int_mul_two_pi _⟩
@@ -912,7 +913,7 @@ theorem cos_eq_one_iff_of_lt_of_lt {x : ℝ} (hx₁ : -τ < x) (hx₂ : x < τ) 
     rw [mul_lt_iff_lt_one_left tau_pos] at hx₂
     rw [neg_lt, neg_mul_eq_neg_mul, mul_lt_iff_lt_one_left tau_pos] at hx₁
     norm_cast at hx₁ hx₂
-    obtain rfl : n = 0 := le_antisymm (by omega) (by omega)
+    obtain rfl : n = 0 := le_antisymm (by cutsat) (by cutsat)
     simp, fun h => by simp [h]⟩
 
 theorem sin_lt_sin_of_lt_of_le_pi_div_two {x y : ℝ} (hx₁ : -(π / 2) ≤ x) (hy₂ : y ≤ π / 2)
@@ -1030,11 +1031,11 @@ theorem range_sin : range sin = (Icc (-1) 1 : Set ℝ) :=
 
 theorem range_cos_infinite : (range Real.cos).Infinite := by
   rw [Real.range_cos]
-  exact Icc_infinite (by norm_num)
+  exact Icc_infinite (by simp)
 
 theorem range_sin_infinite : (range Real.sin).Infinite := by
   rw [Real.range_sin]
-  exact Icc_infinite (by norm_num)
+  exact Icc_infinite (by simp)
 
 section CosDivSq
 
@@ -1063,7 +1064,7 @@ theorem sqrtTwoAddSeries_nonneg {x : ℝ} (h : 0 ≤ x) : ∀ n : ℕ, 0 ≤ sqr
   | _ + 1 => sqrt_nonneg _
 
 theorem sqrtTwoAddSeries_lt_two : ∀ n : ℕ, sqrtTwoAddSeries 0 n < 2
-  | 0 => by norm_num
+  | 0 => by simp
   | n + 1 => by
     refine lt_of_lt_of_le ?_ (sqrt_sq zero_lt_two.le).le
     rw [sqrtTwoAddSeries, sqrt_lt_sqrt_iff, ← lt_sub_iff_add_lt']
@@ -1413,7 +1414,7 @@ theorem cos_pi_div_five : cos (π / 5) = (1 + √5) / 4 := by
     rw [← sq, neg_mul, ← sub_eq_add_neg, ← sub_eq_add_neg]
     exact quadratic_root_cos_pi_div_five
   have hd : discrim 4 (-2) (-1) = (2 * √5) * (2 * √5) := by norm_num [discrim, mul_mul_mul_comm]
-  rcases (quadratic_eq_zero_iff (by norm_num) hd c).mp this with h | h
+  rcases (quadratic_eq_zero_iff (by simp) hd c).mp this with h | h
   · simp [h]; linarith
   · absurd (show 0 ≤ c from cos_nonneg_of_mem_Icc_with_pi <| by constructor <;> linarith [pi_pos.le])
     rw [not_le, h]
@@ -1596,7 +1597,7 @@ theorem tendsto_cos_neg_pi_div_two : Tendsto cos (𝓝[>] (-(π / 2))) (𝓝[>] 
     exact cos_pos_of_mem_Ioo_with_pi hx
 
 theorem tendsto_tan_neg_pi_div_two : Tendsto tan (𝓝[>] (-(π / 2))) atBot := by
-  convert tendsto_cos_neg_pi_div_two.inv_tendsto_nhdsGT_zero.atTop_mul_neg (by norm_num)
+  convert tendsto_cos_neg_pi_div_two.inv_tendsto_nhdsGT_zero.atTop_mul_neg (by simp)
       tendsto_sin_neg_pi_div_two using 1
   simp only [Pi.inv_apply, ← div_eq_inv_mul, ← tan_eq_sin_div_cos]
 
