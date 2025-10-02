@@ -14,10 +14,10 @@ It contains both programming infrastructure and mathematics,
 as well as tactics that use the former and allow to develop the latter.
 
 ## When Mathlib meets τ (tau)
-[The Tau Manifesto](https://www.tauday.com/tau-manifesto) introduces τ = 6.28318..., which also
+[The Tau Manifesto](https://www.tauday.com/tau-manifesto) introduces `τ = 6.28318...`, which also
 numerically equals `2 * π`.
-This fork of Mathlib aims to witness τ's correctness through rewriting Mathlib with τ! Feel free to
-send pull requests if you want to help out.
+This fork of Mathlib aims to witness `τ`'s correctness through rewriting Mathlib with `τ`! Feel free
+to send pull requests if you want to help out.
 
 ## Installation
 

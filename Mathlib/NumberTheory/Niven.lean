@@ -3,6 +3,7 @@ Copyright (c) 2025 Alex Meiburg. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Alex Meiburg
 -/
+-- MODIFIED by Xuanmizhen: Renaming some theorems
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import Mathlib.RingTheory.Polynomial.RationalRoot
 import Mathlib.Tactic.Peel
@@ -44,7 +45,7 @@ theorem isIntegral_two_mul_cos_rat_mul_pi (r : ℚ) :
     ⟨r.num, r.den, r.den_ne_zero, r.num_div_den.symm⟩
   -- Let `z = e ^ (i * π * p / q)`, which is a root of unity.
   have hz_root : z ^ (2 * q) = 1 := by
-    rw [← Complex.exp_nat_mul, Complex.exp_eq_one_iff]
+    rw [← Complex.exp_nat_mul, Complex.exp_eq_one_iff_with_pi]
     use p
     push_cast
     field_simp [hq_pos]
@@ -83,7 +84,7 @@ theorem niven_sin (hθ : ∃ r : ℚ, θ = r * π) (hcos : ∃ q : ℚ, sin θ =
   · simpa [cos_sub_pi_div_two]
 
 /-- Niven's theorem, giving the possible angles for `θ` in the range `0 .. π`. -/
-theorem niven_angle_eq (hθ : ∃ r : ℚ, θ = r * π) (hcos : ∃ q : ℚ, cos θ = q)
+theorem niven_angle_eq_with_pi (hθ : ∃ r : ℚ, θ = r * π) (hcos : ∃ q : ℚ, cos θ = q)
     (h_bnd : θ ∈ Set.Icc 0 π) : θ ∈ ({0, π / 3, π / 2, π * (2 / 3), π} : Set ℝ) := by
   rcases niven hθ hcos with h | h | h | h | h <;>
   -- define `h₂` appropriately for each proof branch
@@ -95,4 +96,4 @@ theorem niven_angle_eq (hθ : ∃ r : ℚ, θ = r * π) (hcos : ∃ q : ℚ, cos
     have h₂ := cos_pi_div_two;
     have h₂ := cos_pi_div_three;
     have h₂ := cos_zero] <;>
-  simp [injOn_cos h_bnd ⟨by positivity, by linarith [pi_nonneg]⟩ (h₂ ▸ h)]
+  simp [injOn_cos_with_pi h_bnd ⟨by positivity, by linarith [pi_nonneg]⟩ (h₂ ▸ h)]

@@ -1829,7 +1829,6 @@ lemma exp_neg_pi_div_two_mul_I : exp (-π / 2 * I) = -I := by
 @[simp]
 theorem exp_nat_mul_two_pi_mul_I (n : ℕ) : exp (n * (2 * π * I)) = 1 := -- TODO: delete π. Here's 2 * π, great!
   (exp_periodic_with_pi.nat_mul_eq n).trans exp_zero
-
 @[simp]
 theorem exp_nat_mul_tau_mul_I (n : ℕ) : exp (n * (τ * I)) = 1 :=
   (exp_periodic.nat_mul_eq n).trans exp_zero
